@@ -1,29 +1,21 @@
-{
-    "presets": [
+module.exports = {
+    presets: [
         [
             "@babel/preset-env",
             {
-                "debug": false,
-                "targets": {
-                    "node": "current"
-                }
+                debug: false,
+                targets: { node: "current" }
             }
         ]
     ],
-        "ignore": [
-            "node_modules"
-        ],
-            "plugins": [
-                [
-                    "module-resolver",
-                    {
-                        "root": [
-                            "./"
-                        ],
-                        "alias": {
-                            "@src": "./src"
-                        }
-                    }
-                ]
-            ]
+    ignore: ["node_modules"],
+    plugins: [
+        [
+            "module-resolver",
+            {
+                root: ["./"],
+                alias: { "@src": "./src" }
+            }
+        ]
+    ]
 }
