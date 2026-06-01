@@ -18,7 +18,7 @@ import {
 export class OrdersController {
   static async createOrder(req, res, next) {
     try {
-      const result = await new CreateOrderService(req.context).create({ ...req.body })
+      const result = await CreateOrderService(req.context).create({ ...req.body })
       validateResponse(createOrderSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -28,7 +28,7 @@ export class OrdersController {
 
   static async getOrder(req, res, next) {
     try {
-      const result = await new GetOrderService(req.context).get({ ...req.params, ...req.query })
+      const result = await GetOrderService(req.context).get({ ...req.params, ...req.query })
       validateResponse(getOrderSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -38,7 +38,7 @@ export class OrdersController {
 
   static async getAllOrders(req, res, next) {
     try {
-      const result = await new GetAllOrdersService(req.context).list({ ...req.query })
+      const result = await GetAllOrdersService(req.context).list({ ...req.query })
       validateResponse(getAllOrdersSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -48,7 +48,7 @@ export class OrdersController {
 
   static async getOrdersHistory(req, res, next) {
     try {
-      const result = await new GetOrdersHistoryService(req.context).history({ ...req.query })
+      const result = await GetOrdersHistoryService(req.context).history({ ...req.query })
       validateResponse(getOrdersHistorySchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -58,7 +58,7 @@ export class OrdersController {
 
   static async cancelOrder(req, res, next) {
     try {
-      const result = await new CancelOrderService(req.context).cancel({ ...req.params, ...req.body })
+      const result = await CancelOrderService(req.context).cancel({ ...req.params, ...req.body })
       validateResponse(cancelOrderSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -68,7 +68,7 @@ export class OrdersController {
 
   static async updateStatus(req, res, next) {
     try {
-      const result = await new UpdateStatusService(req.context).update({ ...req.params, ...req.body })
+      const result = await UpdateStatusService(req.context).update({ ...req.params, ...req.body })
       validateResponse(updateStatusSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
