@@ -16,7 +16,7 @@ import {
 export class UserController {
   static async signup(req, res, next) {
     try {
-      const result = await new SignupService(req.context).signup({ ...req.body })
+      const result = await SignupService(req.context).signup({ ...req.body })
       validateResponse(signupSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -26,7 +26,7 @@ export class UserController {
 
   static async login(req, res, next) {
     try {
-      const result = await new LoginService(req.context).login({ ...req.body })
+      const result = await LoginService(req.context).login({ ...req.body })
       validateResponse(loginSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -36,7 +36,7 @@ export class UserController {
 
   static async getAllUsers(req, res, next) {
     try {
-      const result = await new GetAllUsersService(req.context).list({ ...req.query })
+      const result = await GetAllUsersService(req.context).list({ ...req.query })
       validateResponse(getAllUsersSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -46,7 +46,7 @@ export class UserController {
 
   static async getSpecificUser(req, res, next) {
     try {
-      const result = await new GetSpecificUserService(req.context).get({ ...req.query, ...req.params })
+      const result = await GetSpecificUserService(req.context).get({ ...req.query, ...req.params })
       validateResponse(getSpecificUserSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -56,7 +56,7 @@ export class UserController {
 
   static async logout(req, res, next) {
     try {
-      const result = await new LogoutService(req.context).logout({ ...req.body })
+      const result = await LogoutService(req.context).logout({ ...req.body })
       validateResponse(logoutSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
