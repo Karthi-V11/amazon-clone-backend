@@ -1,23 +1,30 @@
-import { decorateResponse } from '@src/helpers/response.helpers';
-import { getAllProductsService } from '@src/services/products/getAllProducts.service';
-import { getSpecificProductService } from '@src/services/products/getSpecificProduct.service';
+import { decorateResponse } from '@src/helpers/response.helpers'
+import { validateResponse } from '@src/helpers/validateResponse.helper'
+import { GetAllProductsService } from '@src/services/products/getAllProducts.service'
+import { GetSpecificProductService } from '@src/services/products/getSpecificProduct.service'
+import {
+  getAllProductsSchema,
+  getSpecificProductSchema
+} from '@src/schemas/products.schema'
 
 export class ProductsController {
-    static async getAllProducts(req, res, next) {
-        try {
-            const result = await getAllProductsService({ ...req.query }, req.context);
-            return decorateResponse({ req, res, next }, result);
-        } catch (error) {
-            next(error);
-        }
+  static async getAllProducts(req, res, next) {
+    try {
+      const result = await new GetAllProductsService(req.context).list({ ...req.query })
+      validateResponse(getAllProductsSchema.response?.[200], result)
+      return decorateResponse({ req, res, next }, result)
+    } catch (error) {
+      next(error)
     }
+  }
 
-    static async getSpecificProduct(req, res, next) {
-        try {
-            const result = await getSpecificProductService({ ...req.params }, req.context);
-            return decorateResponse({ req, res, next }, result);
-        } catch (error) {
-            next(error);
-        }
+  static async getSpecificProduct(req, res, next) {
+    try {
+      const result = await new GetSpecificProductService(req.context).get({ ...req.params, ...req.query })
+      validateResponse(getSpecificProductSchema.response?.[200], result)
+      return decorateResponse({ req, res, next }, result)
+    } catch (error) {
+      next(error)
     }
+  }
 }

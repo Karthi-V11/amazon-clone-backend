@@ -1,13 +1,24 @@
-import express from 'express';
-import { CartController } from '../controllers/cart.controller';
+import express from 'express'
+import { CartController } from '../controllers/cart.controller'
+import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middleware'
+import {
+  getCartSchema,
+  getAllCartSchema,
+  addToCartSchema,
+  updateCartSchema,
+  removeFromCartSchema,
+  clearAllItemsSchema,
+  cartMergeSchema
+} from '@src/schemas/cart.schema'
 
-const router = express.Router();
+const cartRouter = express.Router()
 
-router.get('/', CartController.getCart);
-router.get('/all', CartController.getAllCart);
-router.put('/:id', CartController.updateCart);
-router.delete('/:id', CartController.removeFromCart);
-router.delete('/clear', CartController.clearAllItems);
-router.post('/merge', CartController.cartMerge);
+cartRouter.get('/', ajvValidate(getCartSchema), CartController.getCart)
+cartRouter.get('/all-cart', ajvValidate(getAllCartSchema), CartController.getAllCart)
+cartRouter.post('/add-to-cart', ajvValidate(addToCartSchema), CartController.addToCart)
+cartRouter.put('/update', ajvValidate(updateCartSchema), CartController.updateCart)
+cartRouter.delete('/remove', ajvValidate(removeFromCartSchema), CartController.removeFromCart)
+cartRouter.delete('/clear', ajvValidate(clearAllItemsSchema), CartController.clearAllItems)
+cartRouter.post('/merge', ajvValidate(cartMergeSchema), CartController.cartMerge)
 
-export const cartRoutes = router;
+export { cartRouter }

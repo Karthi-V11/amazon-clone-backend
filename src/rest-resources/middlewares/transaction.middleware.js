@@ -2,8 +2,7 @@ import { sequelize } from '../models/index.js'
 
 export const transactionMiddleware = async (req, res, next) => {
     const transaction = await sequelize.transaction()
-
-    req.transaction = transaction
+    req.context.transaction = transaction
 
     // if response success → commit
     const originalJson = res.json.bind(res)

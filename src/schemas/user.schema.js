@@ -1,0 +1,124 @@
+export const signupSchema = {
+  body: {
+    type: 'object',
+    properties: {
+      email: { type: 'string', format: 'email' },
+      userName: { type: 'string' },
+      password: { type: 'string' },
+      phone: { type: 'string' },
+      firstName: { type: 'string' },
+      lastName: { type: 'string' },
+      gender: { type: 'string' }
+    },
+    required: ['email', 'userName', 'password', 'phone'],
+    additionalProperties: false
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        data: { type: 'object' }
+      },
+      required: ['data']
+    }
+  }
+}
+
+export const loginSchema = {
+  body: {
+    type: 'object',
+    properties: {
+      email: { type: 'string', format: 'email' },
+      userName: { type: 'string' },
+      password: { type: 'string' }
+    },
+    required: ['password'],
+    anyOf: [
+      { required: ['email'] },
+      { required: ['userName'] }
+    ],
+    additionalProperties: false
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        data: { type: 'object' }
+      },
+      required: ['data']
+    }
+  }
+}
+
+export const getAllUsersSchema = {
+  query: {
+    type: 'object',
+    properties: {
+      page: { type: 'integer', minimum: 1 },
+      limit: { type: 'integer', minimum: 1 },
+      search: { type: 'string' },
+      isActive: { type: 'boolean' }
+    },
+    additionalProperties: false
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            items: { type: 'array', items: { type: 'object' } },
+            total: { type: 'integer' },
+            page: { type: 'integer' },
+            limit: { type: 'integer' }
+          }
+        }
+      },
+      required: ['data']
+    }
+  }
+}
+
+export const getSpecificUserSchema = {
+  query: {
+    type: 'object',
+    properties: {
+      id: { type: 'integer' },
+      email: { type: 'string', format: 'email' },
+      userName: { type: 'string' }
+    },
+    anyOf: [
+      { required: ['id'] },
+      { required: ['email'] },
+      { required: ['userName'] }
+    ],
+    additionalProperties: false
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        data: { type: 'object' }
+      },
+      required: ['data']
+    }
+  }
+}
+
+export const logoutSchema = {
+  body: {
+    type: 'object',
+    properties: {},
+    additionalProperties: false
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        data: { type: ['null', 'object'] }
+      },
+      required: ['data']
+    }
+  }
+}

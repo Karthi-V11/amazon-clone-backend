@@ -1,9 +1,14 @@
-import express from 'express';
-import { ProductsController } from '../controllers/products.controller';
+import express from 'express'
+import { ProductsController } from '../controllers/products.controller'
+import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middleware'
+import {
+  getAllProductsSchema,
+  getSpecificProductSchema
+} from '@src/schemas/products.schema'
 
-const router = express.Router();
+const productsRouter = express.Router()
 
-router.get('/', ProductsController.getAllProducts);
-router.get('/:id', ProductsController.getSpecificProduct);
+productsRouter.get('/', ajvValidate(getAllProductsSchema), ProductsController.getAllProducts)
+productsRouter.get('/:id', ajvValidate(getSpecificProductSchema), ProductsController.getSpecificProduct)
 
-export const productsRoutes = router;
+export { productsRouter }
