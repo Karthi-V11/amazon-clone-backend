@@ -1,4 +1,10 @@
-export const logoutService = async (data) => {
-    // Implement logic here
-    return { success: true, data };
-};
+import { ServiceBase } from '@src/lib/serviceBase'
+
+export class LogoutService extends ServiceBase {
+  async logout() {
+    return {
+      message: 'Logout successful',
+      data: null
+    }
+  }
+}
