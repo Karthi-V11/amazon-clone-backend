@@ -24,3 +24,9 @@ export const dbConfig = {
     seederStorage: 'sequelize',
     seederStorageTableName: 'sequelize_seed_meta'
 }
+
+export default {
+    development: dbConfig,
+    test: dbConfig,
+    production: dbConfig
+}
