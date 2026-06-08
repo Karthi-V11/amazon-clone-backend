@@ -1,5 +1,5 @@
 import express from 'express'
-import { UserController } from '../controllers/user.controller'
+import { UserController } from '@src/rest-resources/controllers/user.controller'
 import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middleware'
 import {
   signupSchema,

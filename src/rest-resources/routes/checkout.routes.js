@@ -1,5 +1,5 @@
 import express from 'express'
-import { CheckoutController } from '../controllers/checkout.controller'
+import { CheckoutController } from '@src/rest-resources/controllers/checkout.controller'
 import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middleware'
 import {
   createCheckoutSchema,

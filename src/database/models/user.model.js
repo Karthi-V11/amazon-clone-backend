@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize'
 import ModelBase from './base.model'
+import { USER_GENDER } from '@src/utils/constants/public.contants.js'
 
 export default class User extends ModelBase {
   static model = 'user'
@@ -91,12 +92,12 @@ export default class User extends ModelBase {
 
   static associate(models) {
     // One user can have many addresses
-    User.hasMany(models.Address, { foreignKey: 'userId', as: 'addresses' });
+    User.hasMany(models.address, { foreignKey: 'userId', as: 'addresses' });
     // One user has one active cart
-    User.hasOne(models.Cart, { foreignKey: 'userId', as: 'cart' });
+    User.hasOne(models.cart, { foreignKey: 'userId', as: 'cart' });
     // One user can have many orders
-    User.hasMany(models.Order, { foreignKey: 'userId', as: 'orders' });
+    User.hasMany(models.order, { foreignKey: 'userId', as: 'orders' });
     // If you support third‑party sellers
-    User.hasMany(models.Product, { foreignKey: 'sellerId', as: 'products' });
+    User.hasMany(models.product, { foreignKey: 'sellerId', as: 'products' });
   }
 }

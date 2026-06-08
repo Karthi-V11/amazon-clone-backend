@@ -44,7 +44,7 @@ export default class CartItem extends ModelBase {
   }
 
   static associate(models) {
-    CartItem.belongsTo(models.Cart, { foreignKey: 'cartId', as: 'cart' });
-    CartItem.belongsTo(models.Product, { foreignKey: 'productId', as: 'product' });
+    CartItem.belongsTo(models.cart, { foreignKey: 'cartId', as: 'cart' });
+    CartItem.belongsTo(models.product, { foreignKey: 'productId', as: 'product' });
   }
 }

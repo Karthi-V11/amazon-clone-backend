@@ -52,8 +52,8 @@ export default class SubCategory extends ModelBase {
 
   static associate(models) {
     // Belongs to Category (the parent)
-    SubCategory.belongsTo(models.Category, { foreignKey: 'parentId', as: 'category' })
+    SubCategory.belongsTo(models.category, { foreignKey: 'parentId', as: 'category' })
     // A sub‑category can have many products
-    SubCategory.hasMany(models.Product, { foreignKey: 'subCategoryId', as: 'products' })
+    SubCategory.hasMany(models.product, { foreignKey: 'subCategoryId', as: 'products' })
   }
 }

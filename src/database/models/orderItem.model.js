@@ -48,7 +48,7 @@ export default class OrderItem extends ModelBase {
   }
 
   static associate(models) {
-    OrderItem.belongsTo(models.Order, { foreignKey: 'orderId', as: 'order' });
-    OrderItem.belongsTo(models.Product, { foreignKey: 'productId', as: 'product' });
+    OrderItem.belongsTo(models.order, { foreignKey: 'orderId', as: 'order' });
+    OrderItem.belongsTo(models.product, { foreignKey: 'productId', as: 'product' });
   }
 }

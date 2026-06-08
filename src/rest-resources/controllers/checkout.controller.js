@@ -1,4 +1,4 @@
-import { decorateResponse } from '@src/helpers/response.helpers'
+import { decorateResponse } from '@src/helpers/responseDecorator.helper'
 import { validateResponse } from '@src/helpers/validateResponse.helper'
 import { CreateCheckoutService } from '@src/services/checkout/createCheckout.service'
 import { ValidateCheckoutService } from '@src/services/checkout/validateCheckout.service'

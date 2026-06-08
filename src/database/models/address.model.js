@@ -1,9 +1,9 @@
-import { DataTypes } from 'sequelize';
-import ModelBase from './base.model';
+import { DataTypes } from 'sequelize'
+import ModelBase from './base.model'
 
 export default class Address extends ModelBase {
-  static model = 'address';
-  static table = 'addresses';
+  static model = 'address'
+  static table = 'addresses'
 
   static options = {
     name: {
@@ -16,46 +16,46 @@ export default class Address extends ModelBase {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
-      allowNull:false,
-      autoIncrement: true,
+      allowNull: false,
+      autoIncrement: true
     },
     userId: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: false
     },
     fullName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     addressLine1: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     addressLine2: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     postalCode: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     isDefault: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      defaultValue: false
     },
-        createdAt: {
+    createdAt: {
       allowNull: false,
       type: DataTypes.DATE
     },
@@ -63,13 +63,16 @@ export default class Address extends ModelBase {
       allowNull: false,
       type: DataTypes.DATE
     }
-  };
+  }
 
   static associate(models) {
+    console.log(models)
+    console.log('models.user =', models.user)
+    console.log('models.order =', models.order)
     // An address belongs to a user
-    Address.belongsTo(models.User, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' });
+    Address.belongsTo(models.user, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' })
     // Can be used as shipping or billing address for many orders
-    Address.hasMany(models.Order, { foreignKey: 'shippingAddressId', as: 'shippingOrders' });
-    Address.hasMany(models.Order, { foreignKey: 'billingAddressId', as: 'billingOrders' });
+    Address.hasMany(models.order, { foreignKey: 'shippingAddressId', as: 'shippingOrders' })
+    Address.hasMany(models.order, { foreignKey: 'billingAddressId', as: 'billingOrders' })
   }
 }

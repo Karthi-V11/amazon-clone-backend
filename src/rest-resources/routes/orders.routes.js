@@ -1,5 +1,5 @@
 import express from 'express'
-import { OrdersController } from '../controllers/orders.controller'
+import { OrdersController } from '@src/rest-resources/controllers/orders.controller'
 import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middleware'
 import {
   createOrderSchema,
@@ -12,11 +12,11 @@ import {
 
 const ordersRouter = express.Router()
 
-ordersRouter.post('/', ajvValidate(createOrderSchema), OrdersController.createOrder)
-ordersRouter.get('/:id', ajvValidate(getOrderSchema), OrdersController.getOrder)
+ordersRouter.post('/create', ajvValidate(createOrderSchema), OrdersController.createOrder)
+ordersRouter.get('/', ajvValidate(getOrderSchema), OrdersController.getOrder)
 ordersRouter.get('/all', ajvValidate(getAllOrdersSchema), OrdersController.getAllOrders)
 ordersRouter.get('/history', ajvValidate(getOrdersHistorySchema), OrdersController.getOrdersHistory)
-ordersRouter.post('/:id/cancel', ajvValidate(cancelOrderSchema), OrdersController.cancelOrder)
-ordersRouter.put('/:id/status', ajvValidate(updateStatusSchema), OrdersController.updateStatus)
+ordersRouter.post('/cancel', ajvValidate(cancelOrderSchema), OrdersController.cancelOrder)
+ordersRouter.put('/status', ajvValidate(updateStatusSchema), OrdersController.updateStatus)
 
 export { ordersRouter }

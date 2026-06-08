@@ -101,9 +101,9 @@ export default class Product extends ModelBase {
     }
 
     static associate(models) {
-        Product.belongsTo(models.Category, { foreignKey: 'categoryId', as: 'category' })
-        Product.belongsTo(models.SubCategory, { foreignKey: 'subCategoryId', as: 'subCategory' })
-        Product.hasMany(models.CartItem, { foreignKey: 'productId', as: 'cartItems' })
-        Product.hasMany(models.OrderItem, { foreignKey: 'productId', as: 'orderItems' })
+        Product.belongsTo(models.category, { foreignKey: 'categoryId', as: 'category' })
+        Product.belongsTo(models.subCategory, { foreignKey: 'subCategoryId', as: 'subCategory' })
+        Product.hasMany(models.cartItem, { foreignKey: 'productId', as: 'cartItems' })
+        Product.hasMany(models.orderItem, { foreignKey: 'productId', as: 'orderItems' })
     }
 }

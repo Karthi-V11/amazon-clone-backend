@@ -1,4 +1,4 @@
-import { decorateResponse } from '@src/helpers/response.helpers'
+import { decorateResponse } from '@src/helpers/responseDecorator.helper'
 import { validateResponse } from '@src/helpers/validateResponse.helper'
 import { CreateOrderService } from '@src/services/orders/createOrder.service'
 import { GetOrderService } from '@src/services/orders/getOrder.service'

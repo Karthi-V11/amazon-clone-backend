@@ -1,5 +1,5 @@
 import express from 'express'
-import { CartController } from '../controllers/cart.controller'
+import { CartController } from '@src/rest-resources/controllers/cart.controller'
 import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middleware'
 import {
   getCartSchema,

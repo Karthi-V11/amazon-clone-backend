@@ -1,5 +1,5 @@
 import express from 'express'
-import { ProductsController } from '../controllers/products.controller'
+import { ProductsController } from '@src/rest-resources/controllers//products.controller'
 import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middleware'
 import {
   getAllProductsSchema,

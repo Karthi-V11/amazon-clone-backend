@@ -2,7 +2,7 @@ export const signupSchema = {
   body: {
     type: 'object',
     properties: {
-      email: { type: 'string', format: 'email' },
+      email: { type: 'string' },
       userName: { type: 'string' },
       password: { type: 'string' },
       phone: { type: 'string' },
@@ -28,7 +28,7 @@ export const loginSchema = {
   body: {
     type: 'object',
     properties: {
-      email: { type: 'string', format: 'email' },
+      email: { type: 'string'},
       userName: { type: 'string' },
       password: { type: 'string' }
     },
@@ -85,7 +85,7 @@ export const getSpecificUserSchema = {
     type: 'object',
     properties: {
       id: { type: 'integer' },
-      email: { type: 'string', format: 'email' },
+      email: { type: 'string' },
       userName: { type: 'string' }
     },
     anyOf: [

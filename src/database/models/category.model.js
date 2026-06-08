@@ -53,6 +53,6 @@ export default class Category extends ModelBase {
 
     static associate(models) {
         Category.hasMany(models.subCategory, { foreignKey: 'parentId', as: 'subcategories' });
-        Category.hasMany(models.Product, { foreignKey: 'categoryId', as: 'products' });
+        Category.hasMany(models.product, { foreignKey: 'categoryId', as: 'products' });
     }
 }

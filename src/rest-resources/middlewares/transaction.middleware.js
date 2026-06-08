@@ -1,4 +1,4 @@
-import { sequelize } from '../models/index.js'
+import { sequelize } from '@src/database/models/index.js'
 
 export const transactionMiddleware = async (req, res, next) => {
     const transaction = await sequelize.transaction()
