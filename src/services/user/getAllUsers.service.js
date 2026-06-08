@@ -38,7 +38,7 @@ export class GetAllUsersService extends ServiceBase {
         }
       }
     } catch (error) {
-      console.log("🔥 SERVICE ERROR:", error)
+      console.log("SERVICE ERROR:", error)
       throw error
     }
   }

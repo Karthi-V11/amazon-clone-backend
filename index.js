@@ -13,7 +13,7 @@ import { contextMiddleware } from '@src/rest-resources/middlewares/context.middl
     console.log(" SERVER INSTANCE STARTED AT:", new Date().toISOString())
 
     app.use((req, res, next) => {
-      console.log("🔥 REQUEST HIT:", req.method, req.url)
+      console.log("REQUEST HIT:", req.method, req.url)
       next()
     })
 

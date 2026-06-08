@@ -31,7 +31,7 @@ export class GetSpecificUserService extends ServiceBase {
         data: user
       }
     } catch (error) {
-      console.log("🔥 SERVICE ERROR:", error);
+      console.log("SERVICE ERROR:", error);
       throw error;
     }
   }
