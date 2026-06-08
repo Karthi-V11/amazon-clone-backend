@@ -1,3 +1,3 @@
-export { appConfig } from './app.config'
-export { dbConfig } from './database.config'
-export { redisOptions } from './redis.config'
+export { appConfig } from './app.config.js'
+export { dbConfig } from './database.config.js'
+export { redisOptions } from './redis.config.js'
