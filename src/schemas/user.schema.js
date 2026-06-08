@@ -28,7 +28,7 @@ export const loginSchema = {
   body: {
     type: 'object',
     properties: {
-      email: { type: 'string'},
+      email: { type: 'string' },
       userName: { type: 'string' },
       password: { type: 'string' }
     },
@@ -54,8 +54,8 @@ export const getAllUsersSchema = {
   query: {
     type: 'object',
     properties: {
-      page: { type: 'integer', minimum: 1 },
-      limit: { type: 'integer', minimum: 1 },
+      page: { type: 'string', minimum: 1 },
+      limit: { type: 'string', minimum: 1 },
       search: { type: 'string' },
       isActive: { type: 'boolean' }
     },
@@ -99,6 +99,7 @@ export const getSpecificUserSchema = {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: { type: 'object' }
       },
       required: ['data']

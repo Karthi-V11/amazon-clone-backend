@@ -16,7 +16,7 @@ export const dbConfig = {
     },
     logging: false,
     define: {
-        underscored: true,
+        underscored: false,
         timestamps: true
     },
     migrationStorage: 'sequelize',

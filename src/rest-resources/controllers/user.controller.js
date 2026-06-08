@@ -14,6 +14,26 @@ import {
 } from '@src/schemas/user.schema'
 
 export class UserController {
+  static async getSpecificUser(req, res, next) {
+    try {
+      const result = await new GetSpecificUserService(req.context).get({...req.query})
+      validateResponse(getSpecificUserSchema.response?.[200], result)
+      return decorateResponse({ req, res, next }, result)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async getAllUsers(req, res, next) {
+    try {
+      const result = await new GetAllUsersService(req.context).list({ ...req.query })
+      validateResponse(getAllUsersSchema.response?.[200], result)
+      return decorateResponse({ req, res, next }, result)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async signup(req, res, next) {
     try {
       const result = await SignupService(req.context).signup({ ...req.body })
@@ -28,26 +48,6 @@ export class UserController {
     try {
       const result = await LoginService(req.context).login({ ...req.body })
       validateResponse(loginSchema.response?.[200], result)
-      return decorateResponse({ req, res, next }, result)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  static async getAllUsers(req, res, next) {
-    try {
-      const result = await GetAllUsersService(req.context).list({ ...req.query })
-      validateResponse(getAllUsersSchema.response?.[200], result)
-      return decorateResponse({ req, res, next }, result)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  static async getSpecificUser(req, res, next) {
-    try {
-      const result = await GetSpecificUserService(req.context).get({ ...req.query, ...req.params })
-      validateResponse(getSpecificUserSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
       next(error)

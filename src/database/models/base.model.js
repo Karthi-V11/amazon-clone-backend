@@ -16,12 +16,19 @@ export default class ModelBase extends Model {
   }
 
   static init(sequelize) {
+    if (this.attributes.createdAt && typeof this.attributes.createdAt === 'object') {
+      this.attributes.createdAt.field = 'created_at'
+    }
+    if (this.attributes.updatedAt && typeof this.attributes.updatedAt === 'object') {
+      this.attributes.updatedAt.field = 'updated_at'
+    }
+
     super.init(this.attributes, {
       sequelize,
       modelName: this.model,
       tableName: this.table,
-      underscored: true,
-      schema: this.schema,
+      underscored: false,
+      schema: typeof this.schema === 'string' ? this.schema : undefined,
       timestamps: this.timestamps,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
