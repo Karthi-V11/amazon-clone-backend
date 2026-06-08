@@ -1,16 +1,16 @@
 import express from 'express'
-import { productsRoutes } from '@src/rest-resources/routes/products.routes'
-import { userRoutes } from '@src/rest-resources/routes/user.routes'
-import { ordersRoutes } from '@src/rest-resources/routes/orders.routes'
-import { checkoutRoutes } from '@src/rest-resources/routes/checkout.routes'
-import { cartRoutes } from '@src/rest-resources/routes/cart.routes'
-import { addressRoutes } from '@src/rest-resources/routes/address.routes'
+import { productsRouter } from '@src/rest-resources/routes/products.routes'
+import { userRouter } from '@src/rest-resources/routes/user.routes'
+import { ordersRouter } from '@src/rest-resources/routes/orders.routes'
+import { checkoutRouter } from '@src/rest-resources/routes/checkout.routes'
+import { cartRouter } from '@src/rest-resources/routes/cart.routes'
+import { addressRouter } from '@src/rest-resources/routes/address.routes'
 
 export const router = express.Router()
 
-router.use('/products', productsRoutes)
-router.use('/user', userRoutes)
-router.use('/orders', ordersRoutes)
-router.use('/checkout', checkoutRoutes)
-router.use('/cart', cartRoutes)
-router.use('/address', addressRoutes)
+router.use('/products', productsRouter)
+router.use('/user', userRouter)
+router.use('/orders', ordersRouter)
+router.use('/checkout', checkoutRouter)
+router.use('/cart', cartRouter)
+router.use('/address', addressRouter)

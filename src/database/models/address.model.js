@@ -66,9 +66,6 @@ export default class Address extends ModelBase {
   }
 
   static associate(models) {
-    console.log(models)
-    console.log('models.user =', models.user)
-    console.log('models.order =', models.order)
     // An address belongs to a user
     Address.belongsTo(models.user, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' })
     // Can be used as shipping or billing address for many orders

@@ -4,9 +4,9 @@ import { ajvValidate } from '@src/rest-resources/middlewares/ajvValidate.middlew
 import { addAddressSchema, getAddressSchema } from '@src/schemas/address.schema'
 import { transactionMiddleware } from '@src/rest-resources/middlewares/transaction.middleware'
 
-const router = express.Router()
+const addressRouter = express.Router()
 
-router.post('/create', ajvValidate(addAddressSchema), transactionMiddleware, AddressController.addAddress)
-router.get('/get-all', ajvValidate(getAddressSchema), AddressController.getAddress)
+addressRouter.post('/create', ajvValidate(addAddressSchema), transactionMiddleware, AddressController.addAddress)
+addressRouter.get('/get-all', ajvValidate(getAddressSchema), AddressController.getAddress)
 
-export const addressRoutes = router
+export { addressRouter }
