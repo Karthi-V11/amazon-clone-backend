@@ -48,17 +48,17 @@ module.exports = {
         type: Sequelize.JSONB,
         allowNull: true,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
     });
 
-    await queryInterface.addIndex('orders', ['user_id'], {
+    await queryInterface.addIndex('orders', ['userId'], {
       name: 'orders_user_id_idx',
     })
   },

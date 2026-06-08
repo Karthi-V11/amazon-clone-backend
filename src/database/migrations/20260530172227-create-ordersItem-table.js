@@ -32,21 +32,21 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
     });
 
-    await queryInterface.addIndex('order_items', ['order_id'], {
+    await queryInterface.addIndex('order_items', ['orderId'], {
       name: 'order_items_order_id_idx',
     });
 
-    await queryInterface.addIndex('order_items', ['product_id'], {
+    await queryInterface.addIndex('order_items', ['productId'], {
       name: 'order_items_product_id_idx',
     });
   },

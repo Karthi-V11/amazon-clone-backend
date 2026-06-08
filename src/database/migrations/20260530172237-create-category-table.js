@@ -20,7 +20,7 @@ module.exports = {
         unique: true,
       },
       parentId: {
-        type: Sequelize.UUID,
+        type: Sequelize.BIGINT,
         allowNull: true,
       },
       description: {
@@ -31,11 +31,11 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }

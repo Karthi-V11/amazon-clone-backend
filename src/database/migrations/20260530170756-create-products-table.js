@@ -67,11 +67,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
@@ -82,11 +82,11 @@ module.exports = {
       name: 'products_slug_unique_idx',
     });
 
-    await queryInterface.addIndex('products', ['category_id'], {
+    await queryInterface.addIndex('products', ['categoryId'], {
       name: 'products_category_id_idx',
     });
 
-    await queryInterface.addIndex('products', ['sub_category_id'], {
+    await queryInterface.addIndex('products', ['subCategoryId'], {
       name: 'products_sub_category_id_idx',
     });
   },

@@ -34,9 +34,9 @@ module.exports = {
       records.push({
         name: subCategory,
         slug: slugify(subCategory, { lower: true, strict: true }),
-        parent_id: categoryMap[category],
+        parentId: categoryMap[category],
         description: null,
-        is_active: true,
+        isActive: true,
         created_at: now,
         updated_at: now
       });

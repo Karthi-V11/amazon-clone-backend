@@ -29,21 +29,21 @@ module.exports = {
         allowNull: true,
         defaultValue: 1,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
     });
 
-    await queryInterface.addIndex('cart_items', ['cart_id'], {
+    await queryInterface.addIndex('cart_items', ['cartId'], {
       name: 'cart_items_cart_id_idx',
     });
 
-    await queryInterface.addIndex('cart_items', ['product_id'], {
+    await queryInterface.addIndex('cart_items', ['productId'], {
       name: 'cart_items_product_id_idx',
     });
   },

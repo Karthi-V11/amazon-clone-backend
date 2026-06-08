@@ -48,17 +48,17 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
     });
 
-    await queryInterface.addIndex('addresses', ['user_id'], {
+    await queryInterface.addIndex('addresses', ['userId'], {
       name: 'addresses_user_id_idx',
     })
   },
