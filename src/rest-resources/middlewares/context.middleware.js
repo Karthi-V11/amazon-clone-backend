@@ -1,5 +1,4 @@
 import { sequelize } from '@src/database/models'
-import { Logger } from '@src/libs/logger'
 import { v4 as uuid } from 'uuid'
 
 /**
@@ -8,14 +7,12 @@ import { v4 as uuid } from 'uuid'
  * traceId - id of the request
  * sequelize - sequelize database connection
  * models - all sequelize models
- * logger - logger instance
  */
 export function contextMiddleware(req, res, next) {
   req.context = {
     traceId: uuid(),
     startTime: Date.now(),
     locale: req.headers.locale || 'EN',
-    logger: Logger,
     sequelize,
     models: sequelize.models
   }

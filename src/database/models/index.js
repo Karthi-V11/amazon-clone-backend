@@ -23,11 +23,9 @@ fs.readdirSync(__dirname)
     const model = require(path.join(__dirname, file)).default
 
     model.init(sequelize)
-    console.log(model.name)
-    console.log(model.modelName)
     db[model.name] = model
   })
-console.log('Loaded models:', Object.keys(db))
+// console.log('Loaded models:', Object.keys(db))
 // Run associations if available
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
