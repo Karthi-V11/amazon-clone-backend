@@ -19,7 +19,7 @@ module.exports = {
       name,
       slug: slugify(name, { lower: true, strict: true }),
       description: null,
-      is_active: true,
+      isActive: true,
       // parent_id column does NOT exist in the current schema – keep commented out or remove
       // parent_id: null,
       created_at: now,

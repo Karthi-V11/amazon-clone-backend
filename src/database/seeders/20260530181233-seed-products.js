@@ -1,6 +1,7 @@
-'use strict';
-const fs = require('fs');
-const path = require('path');
+'use strict'
+const fs = require('fs')
+const path = require('path')
+const slugify = require('slugify')
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -20,30 +21,32 @@ module.exports = {
 
     // Load sub‑category map (key: "category|subCategory" → id)
     const [subRows] = await queryInterface.sequelize.query(`
-      SELECT id, name, parent_id FROM "sub_categories";
+      SELECT id, name, "parentId" FROM "sub_categories";
     `);
     const subCategoryMap = {};
     subRows.forEach(sc => {
-      const parentName = Object.entries(categoryMap).find(([, id]) => id === sc.parent_id)[0];
+      const parentName = Object.entries(categoryMap).find(([, id]) => id === sc.parentId)?.[0];
       const key = `${parentName}|${sc.name}`;
       subCategoryMap[key] = sc.id;
-    });
+    })
+    console.log(subCategoryMap);
 
     const products = data.map(p => ({
       title: p.title,
       description: null,
+      slug: slugify(p.title, { lower: true, strict: true }),
       price: p.price,
-      compare_at_price: null,
-      stock_quantity: Number(p.quantity),
-      image_url: (p.images && p.images[0]) || null,
-      is_active: p.inStock,
-      in_stack: p.inStock,
+      compareAtPrice: null,
+      stockQuantity: Number(p.quantity),
+      imageUrl: (p.images && p.images[0]) || null,
+      isActive: p.inStock,
+      inStack: p.inStock,
       brand: p.brand,
-      category_id: categoryMap[p.category],
-      sub_category_id: subCategoryMap[`${p.category}|${p.subCategory}`],
+      categoryId: categoryMap[p.category],
+      subCategoryId: subCategoryMap[`${p.category}|${p.subCategory}`],
       created_at: new Date(p.createdAt),
       updated_at: new Date(p.updatedAt)
-    }));
+    }))
 
     await queryInterface.bulkInsert('products', products, {});
   },

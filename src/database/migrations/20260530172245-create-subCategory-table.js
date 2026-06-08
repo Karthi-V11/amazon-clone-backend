@@ -34,11 +34,11 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
@@ -49,7 +49,7 @@ module.exports = {
       name: 'sub_categories_slug_unique_idx',
     })
 
-    await queryInterface.addIndex('sub_categories', ['parent_id'], {
+    await queryInterface.addIndex('sub_categories', ['parentId'], {
       name: 'sub_categories_parent_id_idx',
     })
   },

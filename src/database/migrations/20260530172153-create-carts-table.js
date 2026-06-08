@@ -20,17 +20,17 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: 'active',
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
     });
 
-    await queryInterface.addIndex('carts', ['user_id'], {
+    await queryInterface.addIndex('carts', ['userId'], {
       name: 'carts_user_id_idx',
     });
   },

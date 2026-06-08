@@ -49,11 +49,11 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
-      created_at: { 
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: { 
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
@@ -64,12 +64,12 @@ module.exports = {
       name: 'users_email_unique_idx',
     });
 
-    await queryInterface.addIndex('users', ['user_name'], {
+    await queryInterface.addIndex('users', ['userName'], {
       unique: true,
       name: 'users_user_name_unique_idx',
     });
 
-    await queryInterface.addIndex('users', ['unique_id'], {
+    await queryInterface.addIndex('users', ['uniqueId'], {
       unique: true,
       name: 'users_unique_id_unique_idx',
     });
