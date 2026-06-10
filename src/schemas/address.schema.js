@@ -1,44 +1,28 @@
 export const addAddressSchema = {
   body: {
-    type: "object",
+    type: 'object',
     properties: {
-      userId: { type: "string" },
-      street: { type: "string" },
-      city: { type: "string" },
-      pincode: { type: "string", minLength: 6, maxLength: 6 },
-      country: { type: "string", default: "India" }
+      fullName: { type: 'string' },
+      addressLine1: { type: 'string' },
+      addressLine2: { type: 'string' },
+      city: { type: 'string' },
+      state: { type: 'string' },
+      postalCode: { type: 'string', minLength: 6, maxLength: 6 },
+      country: { type: 'string', default: 'India' },
+      isDefault: { type: 'boolean', default: false }
     },
-    required: ["userId", "street", "city", "pincode"],
+    required: ['fullName', 'addressLine1', 'city', 'state', 'postalCode', 'country'],
     additionalProperties: false
   },
   response: {
     200: {
-      type: "object",
+      type: 'object',
       properties: {
-        data: {
-          type: "object",
-          properties: {
-            id: { type: "integer" },
-            userId: { type: "string" },
-            street: { type: "string" },
-            city: { type: "string" },
-            pincode: { type: "string" },
-            country: { type: "string" }
-          }
-        }
+        message: { type: 'string' },
+        data: { type: 'object' }
       },
-      required: ["data"]
+      required: ['message', 'data']
     }
   }
 }
 
-export const getAddressSchema = {
-  query: {
-    type: "object",
-    properties: {
-      userId: { type: "string" }
-    },
-    required: ["userId"],
-    additionalProperties: false
-  }
-}

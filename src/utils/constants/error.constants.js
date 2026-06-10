@@ -10,7 +10,8 @@ export const messages = {
     ACCESS_TOKEN_EXPIRED_OR_NOT_PASSED: 'ACCESS_TOKEN_EXPIRED_OR_NOT_PASSED',
     PHONE_ALREADY_EXISTS: 'PHONE_ALREADY_EXISTS',
     EMAIL_ALREADY_EXISTS: 'EMAIL_ALREADY_EXISTS',
-    USERNAME_ALREADY_EXISTS: 'USERNAME_ALREADY_EXISTS'
+    USERNAME_ALREADY_EXISTS: 'USERNAME_ALREADY_EXISTS',
+    ADDRESS_ALREADY_EXISTS: 'ADDRESS_ALREADY_EXISTS'
 }
 
 export const errorTypes = {
@@ -83,5 +84,12 @@ export const errorTypes = {
         isOperational: true,
         description: messages.PHONE_ALREADY_EXISTS,
         errorCode: 1010
-    }
+    },
+    AddressAlreadyExistsErrorType: {
+        name: 'AddressAlreadyExistsErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.ADDRESS_ALREADY_EXISTS,
+        errorCode: 1011
+    },
 }

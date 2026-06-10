@@ -1,36 +1,43 @@
 import { ServiceBase } from '@src/lib/serviceBase'
+import { APIError } from '@src/errors/api.error'
 
 export class AddAddressService extends ServiceBase {
     async create(payload) {
-        const transaction = this.context.transaction;
-        const { userId, fullName, addressLine1, addressLine2, city, state, postalCode, country, isDefault = false } = payload
+        try {
+            const transaction = this.context.transaction
+            const { address: Address } = this.models
+            const { userId, fullName, addressLine1, addressLine2, city, state, postalCode, country, isDefault = false } = payload
 
-        const addressCount = await this.models.address.count({
-            where: { userId },
-            transaction
-        });
+            if (!userId) return this.addError('UnauthorizedErrorType')
 
-        const finalIsDefault = addressCount === 0 ? true : isDefault;
+            const addressCount = await Address.count({ where: { userId }, transaction })
+            const finalIsDefault = addressCount === 0 ? true : isDefault
 
-        if (finalIsDefault) await this.models.address.update({ isDefault: false }, { where: { userId }, transaction })
+            const existingAddress = await Address.findOne({ where: { userId, addressLine1, postalCode } })
+            if (existingAddress) return this.addError('AddressAlreadyExistsErrorType')
 
-        const address = await this.models.address.create(
-            {
-                userId,
-                fullName,
-                addressLine1,
-                addressLine2: addressLine2 || null,
-                city,
-                state,
-                postalCode,
-                country,
-                isDefault: finalIsDefault
-            },
-            {
-                transaction
+            if (finalIsDefault) await Address.update({ isDefault: false }, { where: { userId }, transaction })
+
+            const address = await Address.create(
+                {
+                    userId,
+                    fullName,
+                    addressLine1,
+                    addressLine2: addressLine2 || null,
+                    city,
+                    state,
+                    postalCode,
+                    country,
+                    isDefault: finalIsDefault
+                },
+                { transaction }
+            )
+            return {
+                message: 'Address added successfully',
+                data: address.toJSON()
             }
-        );
-
-        return address.toJSON();
+        } catch (error) {
+            throw new APIError(error)
+        }
     }
 }
