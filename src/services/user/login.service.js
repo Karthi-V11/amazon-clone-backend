@@ -1,29 +1,53 @@
+import bcrypt from 'bcryptjs'
+import { Op } from 'sequelize'
+import { APIError } from '@src/errors/api.error'
 import { ServiceBase } from '@src/lib/serviceBase'
+import AuthenticationError from '@src/errors/authentication.error'
+import { signAccessToken, signRefreshToken } from '@src/utils/jwt'
 
 export class LoginService extends ServiceBase {
   async login(data) {
-    const { user: User } = this.models
-    const { email, userName, password } = data
+    try {
+      const { user: User } = this.models
+      const transaction = this.context.transaction
+      const identifier = data.email || data.userName
 
-    if ((!email && !userName) || !password) {
-      throw new Error('Email or username and password are required')
-    }
+      const user = await User.findOne({
+        where: {
+          [Op.or]: [
+            { email: identifier?.toLowerCase() },
+            { userName: identifier }
+          ]
+        }
+      })
 
-    const where = email ? { email } : { userName }
-    const user = await User.findOne({ where })
+      if (!user) throw new AuthenticationError()
 
-    if (!user || user.password !== password) {
-      throw new Error('Invalid credentials')
-    }
+      const isMatch = await bcrypt.compare(data.password, user.password)
+      if (!isMatch) return this.addError('UnauthorizedErrorType')
 
-    await user.update({ lastLogin: new Date() })
+      const payload = {
+        id: user.id,
+        email: user.email
+      }
 
-    const result = user.toJSON()
-    delete result.password
+      const accessToken = signAccessToken(payload)
+      await user.update({ lastLogin: new Date() }, { transaction })
+      // const refreshToken = signRefreshToken({ id: user.id })
 
-    return {
-      message: 'Login successful',
-      data: result
+      const { password, createdAt, updatedAt, ...safeUser } = user.toJSON()
+      console.log("Login successful: ", accessToken);
+
+      return {
+        message: 'Login successful',
+        data: {
+          user: safeUser,
+          accessToken,
+          refreshToken: null
+        }
+      }
+    } catch (error) {
+      throw new APIError(error)
     }
   }
 }

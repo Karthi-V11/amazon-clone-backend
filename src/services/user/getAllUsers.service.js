@@ -1,12 +1,12 @@
 import { Op } from 'sequelize'
 import { ServiceBase } from '@src/lib/serviceBase'
+import { APIError } from '@src/errors/api.error'
 
 export class GetAllUsersService extends ServiceBase {
   async list(data) {
     try {
       const { user: User } = this.models
       const { page = 1, limit = 20, search, isActive } = data
-      console.log("args:", data)
 
       const where = {}
       if (typeof isActive !== 'undefined') where.isActive = isActive
@@ -38,8 +38,7 @@ export class GetAllUsersService extends ServiceBase {
         }
       }
     } catch (error) {
-      console.log("SERVICE ERROR:", error)
-      throw error
+      throw new APIError(error)
     }
   }
 }
