@@ -19,23 +19,24 @@ export const getAllProductsSchema = {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: {
           type: 'object',
           properties: {
             items: { type: 'array', items: { type: 'object' } },
             total: { type: 'integer' },
             page: { type: 'integer' },
-            limit: { type: 'integer' }
+            perPage: { type: 'integer' }
           }
         }
       },
-      required: ['data']
+      required: ['message', 'data']
     }
   }
 }
 
 export const getSpecificProductSchema = {
-  params: {
+  query: {
     type: 'object',
     properties: {
       id: { type: 'integer' }
@@ -47,9 +48,10 @@ export const getSpecificProductSchema = {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: { type: 'object' }
       },
-      required: ['data']
+      required: ['message', 'data']
     }
   }
 }
