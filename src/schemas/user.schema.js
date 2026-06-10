@@ -2,10 +2,10 @@ export const signupSchema = {
   body: {
     type: 'object',
     properties: {
-      email: { type: 'string' },
+      email: { type: 'string', format: 'email' },
       userName: { type: 'string' },
       password: { type: 'string' },
-      phone: { type: 'string' },
+      phone: { type: 'string', minLength: 10, maxLength: 15 },
       firstName: { type: 'string' },
       lastName: { type: 'string' },
       gender: { type: 'string' }
@@ -17,7 +17,9 @@ export const signupSchema = {
     200: {
       type: 'object',
       properties: {
-        data: { type: 'object' }
+        message: { type: 'string' },
+        data: { type: 'object' },
+        token: { type: 'string' },
       },
       required: ['data']
     }
@@ -43,7 +45,9 @@ export const loginSchema = {
     200: {
       type: 'object',
       properties: {
-        data: { type: 'object' }
+        data: { type: 'object' },
+        accessToken: { type: 'string' },
+        refreshToken: { type: 'string' }
       },
       required: ['data']
     }

@@ -20,7 +20,7 @@ import {
 export class CartController {
   static async addToCart(req, res, next) {
     try {
-      const result = await AddToCartService(req.context).add({ ...req.body })
+      const result = await new AddToCartService(req.context).add({ ...req.body })
       validateResponse(addToCartSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -30,7 +30,7 @@ export class CartController {
 
   static async getCart(req, res, next) {
     try {
-      const result = await GetCartService(req.context).get({ ...req.query })
+      const result = await new GetCartService(req.context).get({ ...req.query })
       validateResponse(getCartSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -40,7 +40,7 @@ export class CartController {
 
   static async getAllCart(req, res, next) {
     try {
-      const result = await GetAllCartService(req.context).list({ ...req.query })
+      const result = await new GetAllCartService(req.context).list({ ...req.query })
       validateResponse(getAllCartSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -50,7 +50,7 @@ export class CartController {
 
   static async updateCart(req, res, next) {
     try {
-      const result = await UpdateCartService(req.context).update({ ...req.params, ...req.body })
+      const result = await new UpdateCartService(req.context).update({ ...req.params, ...req.body })
       validateResponse(updateCartSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -60,7 +60,7 @@ export class CartController {
 
   static async removeFromCart(req, res, next) {
     try {
-      const result = await RemoveFromCartService(req.context).remove({ ...req.query, ...req.body })
+      const result = await new RemoveFromCartService(req.context).remove({ ...req.query, ...req.body })
       validateResponse(removeFromCartSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -70,7 +70,7 @@ export class CartController {
 
   static async clearAllItems(req, res, next) {
     try {
-      const result = await ClearAllItemsService(req.context).clear({ ...req.query, ...req.body })
+      const result = await new ClearAllItemsService(req.context).clear({ ...req.query, ...req.body })
       validateResponse(clearAllItemsSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -80,7 +80,7 @@ export class CartController {
 
   static async cartMerge(req, res, next) {
     try {
-      const result = await CartMergeService(req.context).merge({ ...req.body })
+      const result = await new CartMergeService(req.context).merge({ ...req.body })
       validateResponse(cartMergeSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {

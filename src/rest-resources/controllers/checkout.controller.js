@@ -18,7 +18,7 @@ import {
 export class CheckoutController {
   static async createCheckout(req, res, next) {
     try {
-      const result = await CreateCheckoutService(req.context).create({ ...req.body })
+      const result = await new CreateCheckoutService(req.context).create({ ...req.body })
       validateResponse(createCheckoutSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -28,7 +28,7 @@ export class CheckoutController {
 
   static async validateCheckout(req, res, next) {
     try {
-      const result = await ValidateCheckoutService(req.context).validate({ ...req.body })
+      const result = await new ValidateCheckoutService(req.context).validate({ ...req.body })
       validateResponse(validateCheckoutSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -38,7 +38,7 @@ export class CheckoutController {
 
   static async applyCoupon(req, res, next) {
     try {
-      const result = await ApplyCouponService(req.context).apply({ ...req.body })
+      const result = await new ApplyCouponService(req.context).apply({ ...req.body })
       validateResponse(applyCouponSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -48,7 +48,7 @@ export class CheckoutController {
 
   static async selectAddress(req, res, next) {
     try {
-      const result = await SelectAddressService(req.context).select({ ...req.body })
+      const result = await new SelectAddressService(req.context).select({ ...req.body })
       validateResponse(selectAddressSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -58,7 +58,7 @@ export class CheckoutController {
 
   static async delivery(req, res, next) {
     try {
-      const result = await DeliveryService(req.context).choose({ ...req.body })
+      const result = await new DeliveryService(req.context).choose({ ...req.body })
       validateResponse(deliverySchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -68,7 +68,7 @@ export class CheckoutController {
 
   static async paymentOrder(req, res, next) {
     try {
-      const result = await PaymentOrderService(req.context).pay({ ...req.body })
+      const result = await new PaymentOrderService(req.context).pay({ ...req.body })
       validateResponse(paymentOrderSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {

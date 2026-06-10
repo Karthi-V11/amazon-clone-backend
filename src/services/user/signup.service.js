@@ -1,44 +1,56 @@
+import bcrypt from 'bcryptjs'
 import { Op } from 'sequelize'
 import { ServiceBase } from '@src/lib/serviceBase'
+import { APIError } from '@src/errors/api.error'
+import { signAccessToken } from '@src/utils/jwt'
 
 export class SignupService extends ServiceBase {
   async signup(data) {
-    const { user: User } = this.models
-    const { email, userName, password, phone, firstName, lastName, gender } = data
+    try {
+      const transaction = this.context.transaction
+      const { user: User } = this.models
+      const { phone, firstName, lastName, gender } = data
 
-    if (!email || !userName || !password || !phone) {
-      throw new Error('email, userName, password and phone are required')
-    }
+      const email = data.email.toLowerCase().trim()
+      const userName = data.userName.trim()
 
-    const existingUser = await User.findOne({
-      where: {
-        [Op.or]: [
-          { email },
-          { userName }
-        ]
+
+      const existingUser = await User.findOne({
+        where: { [Op.or]: [{ email }, { userName }, { phone }] }
+      })
+
+      if (existingUser) {
+        if (existingUser.email === email) return this.addError('EmailAlreadyExistsErrorType')
+        if (existingUser.userName === userName) return this.addError('UserNameAlreadyExistsErrorType')
+        if (existingUser.phone === phone) return this.addError('PhoneAlreadyExistsErrorType')
       }
-    })
 
-    if (existingUser) {
-      throw new Error('A user with this email or username already exists')
-    }
+      const hashedPassword = await bcrypt.hash(data.password, 10)
 
-    const user = await User.create({
-      email,
-      userName,
-      password,
-      phone,
-      firstName,
-      lastName,
-      gender
-    })
+      const user = await User.create({
+        email,
+        userName,
+        password: hashedPassword,
+        phone,
+        firstName,
+        lastName,
+        gender
+      }, { transaction })
 
-    const result = user.toJSON()
-    delete result.password
+      const { password, ...safeUser } = user.toJSON()
 
-    return {
-      message: 'Signup successful',
-      data: result
+      const accessToken = signAccessToken({ id: user.id, email: user.email })
+      console.log('accessToken', accessToken);
+
+      return {
+        message: 'Signup successful',
+        data: {
+          user: safeUser,
+          accessToken
+        }
+      }
+    } catch (error) {
+      throw new APIError(error)
     }
   }
 }

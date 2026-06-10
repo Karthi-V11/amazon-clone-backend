@@ -1,10 +1,9 @@
 import { ServiceBase } from '@src/lib/serviceBase'
+import { APIError } from '@src/errors/api.error';
 
 export class GetSpecificUserService extends ServiceBase {
   async get(data) {
     try {
-      console.log("SERVICE STARTED");
-      console.log("models:", this.models);
       const { user: User } = this.models
       const { id, email, userName } = data
       const where = {}
@@ -22,17 +21,14 @@ export class GetSpecificUserService extends ServiceBase {
         attributes: { exclude: ['password'] }
       })
 
-      if (!user) {
-        throw new Error('User not found')
-      }
+      if (!user) return this.addError('UserDoesNotExistsErrorType')
 
       return {
         message: 'User retrieved successfully',
         data: user
       }
     } catch (error) {
-      console.log("SERVICE ERROR:", error);
-      throw error;
+      throw new APIError(error)
     }
   }
 }

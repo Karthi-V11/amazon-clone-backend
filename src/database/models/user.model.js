@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize'
 import ModelBase from './base.model'
-import { USER_GENDER } from '@src/utils/constants/public.contants.js'
+import { USER_GENDER } from '@src/utils/constants/public.constants.js'
 
 export default class User extends ModelBase {
   static model = 'user'

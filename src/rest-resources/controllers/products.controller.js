@@ -10,7 +10,7 @@ import {
 export class ProductsController {
   static async getAllProducts(req, res, next) {
     try {
-      const result = await GetAllProductsService(req.context).list({ ...req.query })
+      const result = await new GetAllProductsService(req.context).list({ ...req.query })
       validateResponse(getAllProductsSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
@@ -20,7 +20,7 @@ export class ProductsController {
 
   static async getSpecificProduct(req, res, next) {
     try {
-      const result = await GetSpecificProductService(req.context).get({ ...req.params, ...req.query })
+      const result = await new GetSpecificProductService(req.context).get({ ...req.params, ...req.query })
       validateResponse(getSpecificProductSchema.response?.[200], result)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {

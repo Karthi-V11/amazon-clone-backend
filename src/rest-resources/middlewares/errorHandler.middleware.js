@@ -1,6 +1,6 @@
 export const errorHandler = (err, req, res, next) => {
 
-    const statusCode = err.statusCode || 500
+    const statusCode = err.statusCode || err.status || 500
 
     const response = {
         success: false,
@@ -9,16 +9,22 @@ export const errorHandler = (err, req, res, next) => {
         errorCode: err.errorCode || null
     }
 
+    if (err.errors) {
+        response.errors = err.errors
+    }
+
+    if (err.fields) {
+        response.fields = err.fields
+    }
+
     // show stack only in development
     if (process.env.NODE_ENV === 'development') {
         response.stack = err.stack
     }
 
     if (err.name === 'SequelizeValidationError') {
-        return res.status(400).json({
-            success: false,
-            message: err.errors.map(e => e.message)
-        })
+        response.message = err.errors.map(e => e.message)
+        return res.status(400).json(response)
     }
 
     return res.status(statusCode).json(response)
