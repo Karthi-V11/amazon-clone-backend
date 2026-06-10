@@ -11,7 +11,10 @@ export const messages = {
     PHONE_ALREADY_EXISTS: 'PHONE_ALREADY_EXISTS',
     EMAIL_ALREADY_EXISTS: 'EMAIL_ALREADY_EXISTS',
     USERNAME_ALREADY_EXISTS: 'USERNAME_ALREADY_EXISTS',
-    ADDRESS_ALREADY_EXISTS: 'ADDRESS_ALREADY_EXISTS'
+    ADDRESS_ALREADY_EXISTS: 'ADDRESS_ALREADY_EXISTS',
+    ProductIdRequired: 'ProductIdRequired',
+    ReviewAlreadyExists: 'ReviewAlreadyExists',
+    InvalidRating: 'InvalidRating'
 }
 
 export const errorTypes = {
@@ -91,5 +94,26 @@ export const errorTypes = {
         isOperational: true,
         description: messages.ADDRESS_ALREADY_EXISTS,
         errorCode: 1011
+    },
+    ProductIdRequiredErrorType: {
+        name: 'ProductIdRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.ProductIdRequired,
+        errorCode: 1012
+    },
+    ReviewAlreadyExistsErrorType: {
+        name: 'ReviewAlreadyExistsErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.ReviewAlreadyExists,
+        errorCode: 1013
+    },
+    InvalidRatingErrorType: {
+        name: 'InvalidRatingErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.InvalidRating,
+        errorCode: 1014
     },
 }
