@@ -3,18 +3,15 @@ export const getCartSchema = {
     type: 'object',
     properties: {
       cartId: { type: 'integer' },
-      userId: { type: 'integer' }
     },
-    anyOf: [
-      { required: ['cartId'] },
-      { required: ['userId'] }
-    ],
+    required: ['cartId'],
     additionalProperties: false
   },
   response: {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: { type: 'object' }
       },
       required: ['data']
@@ -28,8 +25,7 @@ export const getAllCartSchema = {
     properties: {
       page: { type: 'integer', minimum: 1 },
       limit: { type: 'integer', minimum: 1 },
-      status: { type: 'string' },
-      userId: { type: 'integer' }
+      status: { type: 'string' }
     },
     additionalProperties: false
   },
@@ -37,6 +33,7 @@ export const getAllCartSchema = {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: {
           type: 'object',
           properties: {
@@ -70,20 +67,20 @@ export const addToCartSchema = {
   body: {
     type: 'object',
     properties: {
-      userId: { type: 'integer' },
       productId: { type: 'integer' },
       quantity: { type: 'integer', minimum: 1 }
     },
-    required: ['userId', 'productId'],
+    required: ['productId'],
     additionalProperties: false
   },
   response: {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: { type: 'object' }
       },
-      required: ['data']
+      required: ['message', 'data']
     }
   }
 }
@@ -108,6 +105,7 @@ export const updateCartSchema = {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: { type: 'object' }
       },
       required: ['data']
@@ -116,42 +114,26 @@ export const updateCartSchema = {
 }
 
 export const removeFromCartSchema = {
-  query: cartIdentifierSchema,
   body: cartIdentifierSchema,
   response: {
     200: {
       type: 'object',
       properties: {
+        message: { type: 'string' },
         data: { type: ['null', 'object'] }
       },
-      required: ['data']
+      required: ['message', 'data']
     }
   }
 }
 
 export const clearAllItemsSchema = {
-  query: {
-    type: 'object',
-    properties: {
-      cartId: { type: 'integer' },
-      userId: { type: 'integer' }
-    },
-    anyOf: [
-      { required: ['cartId'] },
-      { required: ['userId'] }
-    ],
-    additionalProperties: false
-  },
   body: {
     type: 'object',
     properties: {
       cartId: { type: 'integer' },
-      userId: { type: 'integer' }
     },
-    anyOf: [
-      { required: ['cartId'] },
-      { required: ['userId'] }
-    ],
+    required: ['cartId'],
     additionalProperties: false
   },
   response: {
@@ -169,7 +151,6 @@ export const cartMergeSchema = {
   body: {
     type: 'object',
     properties: {
-      userId: { type: 'integer' },
       items: {
         type: 'array',
         items: {
@@ -183,7 +164,7 @@ export const cartMergeSchema = {
         }
       }
     },
-    required: ['userId', 'items'],
+    required: ['items'],
     additionalProperties: false
   },
   response: {

@@ -1,40 +1,39 @@
+import { APIError } from '@src/errors/api.error'
 import { ServiceBase } from '@src/lib/serviceBase'
 
 export class AddToCartService extends ServiceBase {
   async add(data) {
-    const { cart: Cart, cartItem: CartItem, product: Product } = this.models
-    const { userId, productId, quantity = 1 } = data
+    try {
+      const transaction = this.context.transaction
+      const { cart: Cart, cartItem: CartItem, product: Product } = this.models
+      const { userId, productId, quantity } = data
 
-    if (!userId || !productId) {
-      throw new Error('userId and productId are required')
-    }
+      if (!userId || !productId) return this.addError('UserIdAndProductIdRequiredErrorType')
 
-    const product = await Product.findByPk(productId)
-    if (!product) {
-      throw new Error('Product not found')
-    }
+      if (Number(quantity) <= 0) return this.addError('InvalidQuantityErrorType')
 
-    let cart = await Cart.findOne({ where: { userId, status: 'active' } })
-    if (!cart) {
-      cart = await Cart.create({ userId, status: 'active' })
-    }
+      const product = await Product.findByPk(productId)
+      if (!product) return this.addError('ProductNotFoundErrorType')
 
-    const [item, created] = await CartItem.findOrCreate({
-      where: { cartId: cart.id, productId },
-      defaults: { quantity }
-    })
+      let cart = await Cart.findOne({ where: { userId, status: 'active' } })
+      if (!cart) {
+        cart = await Cart.create({ userId, status: 'active' }, { transaction })
+      }
 
-    if (!created) {
-      await item.update({ quantity: item.quantity + Number(quantity) })
-    }
+      const [item, created] = await CartItem.findOrCreate({
+        where: { cartId: cart.id, productId },
+        defaults: { quantity }
+      }, { transaction })
 
-    const currentCart = await Cart.findByPk(cart.id, {
-      include: [{ model: CartItem, as: 'items', include: [{ model: Product, as: 'product' }] }]
-    })
+      if (!created) {
+        await item.update({ quantity: Number(item.quantity) + Number(quantity) }, { transaction })
+      }
 
-    return {
-      message: 'Product added to cart successfully',
-      data: currentCart
+      await item.reload({ include: [{ model: Product, as: 'product', attributes: ['id', 'title', 'imageUrl', 'price', 'stockQuantity'] }] })
+
+      return { message: 'Product added to cart successfully', data: item }
+    } catch (error) {
+      throw new APIError(error)
     }
   }
 }

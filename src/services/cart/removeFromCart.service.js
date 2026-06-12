@@ -1,28 +1,43 @@
+import { APIError } from '@src/errors/api.error'
 import { ServiceBase } from '@src/lib/serviceBase'
 
 export class RemoveFromCartService extends ServiceBase {
   async remove(data) {
-    const { cartItem: CartItem } = this.models
-    const { cartItemId, cartId, productId } = data
+    const transaction = this.context.transaction
+    try {
+      const { cartItem: CartItem } = this.models
+      const { cartItemId, cartId, productId } = data
 
-    const where = {}
-    if (cartItemId) where.id = cartItemId
-    if (cartId && productId) Object.assign(where, { cartId, productId })
+      const where = {}
 
-    if (!Object.keys(where).length) {
-      throw new Error('cartItemId or cartId and productId are required')
-    }
+      if (cartItemId) {
+        where.id = cartItemId
+      } else if (cartId && productId) {
+        where.cartId = cartId
+        where.productId = productId
+      } else {
+        return this.addError('CartItemIdentifierRequiredErrorType')
+      }
 
-    const item = await CartItem.findOne({ where })
-    if (!item) {
-      throw new Error('Cart item not found')
-    }
+      const item = await CartItem.findOne({ where })
 
-    await item.destroy()
+      if (!item) return this.addError('CartItemNotFoundErrorType')
 
-    return {
-      message: 'Cart item removed successfully',
-      data: null
+      const deletedItem = {
+        id: item.id,
+        cartId: item.cartId,
+        productId: item.productId,
+        quantity: item.quantity
+      }
+
+      await item.destroy()
+
+      return {
+        message: 'Cart item removed successfully',
+        data: deletedItem
+      }
+    } catch (error) {
+      throw new APIError(error)
     }
   }
 }

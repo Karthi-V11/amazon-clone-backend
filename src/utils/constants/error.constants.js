@@ -21,7 +21,15 @@ export const messages = {
     OrderStatusInvalidForCancel: 'OrderStatusInvalidForCancel',
     OrderStatusInvalidForReturn: 'OrderStatusInvalidForReturn',
     OrderIdRequired: 'OrderIdRequired',
-    UserIdRequired: 'UserIdRequired'
+    UserIdRequired: 'UserIdRequired',
+    UserIdAndProductIdRequired: 'UserIdAndProductIdRequired',
+    ProductNotFound: 'ProductNotFound',
+    InvalidQuantity: 'InvalidQuantity',
+    CartIdOrUserIdRequired: 'CartIdOrUserIdRequired',
+    CartNotFound: 'CartNotFound',
+    CartItemIdentifierRequired: 'CartItemIdentifierRequired',
+    CartItemNotFound: 'CartItemNotFound',
+    UserIdAndItemsRequired: 'UserIdAndItemsRequired'
 }
 
 export const errorTypes = {
@@ -178,5 +186,61 @@ export const errorTypes = {
         isOperational: true,
         description: messages.UserIdRequired,
         errorCode: 1022
+    },
+    UserIdAndProductIdRequiredErrorType: {
+        name: 'UserIdAndProductIdRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.UserIdAndProductIdRequired,
+        errorCode: 1023
+    },
+    ProductNotFoundErrorType: {
+        name: 'ProductNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.ProductNotFound,
+        errorCode: 1024
+    },
+    InvalidQuantityErrorType: {
+        name: 'InvalidQuantityErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.InvalidQuantity,
+        errorCode: 1025
+    },
+    CartNotFoundErrorType: {
+        name: 'CartNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.CartNotFound,
+        errorCode: 1026
+    },
+    CartIdOrUserIdRequiredErrorType: {
+        name: 'CartIdOrUserIdRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.CartIdOrUserIdRequired,
+        errorCode: 1027
+    },
+    CartItemIdentifierRequiredErrorType: {
+        name: 'CartItemIdentifierRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.CartItemIdentifierRequired,
+        errorCode: 1028
+    },
+    CartItemNotFoundErrorType: {
+        name: 'CartItemNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.CartItemNotFound,
+        errorCode: 1029
+    },
+    UserIdAndItemsRequiredErrorType: {
+        name: 'UserIdAndItemsRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.UserIdAndItemsRequired,
+        errorCode: 1030
     }
 }
