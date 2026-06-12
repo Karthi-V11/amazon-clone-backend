@@ -1,32 +1,55 @@
+import { APIError } from '@src/errors/api.error'
 import { ServiceBase } from '@src/lib/serviceBase'
 
 export class UpdateCartService extends ServiceBase {
   async update(data) {
-    const { cartItem: CartItem } = this.models
-    const { cartItemId, cartId, productId, quantity } = data
+    const transaction = this.context.transaction
+    try {
+      const { cartItem: CartItem, product: Product } = this.models
+      const { cartItemId, cartId, productId, quantity } = data
 
-    if (!quantity || Number(quantity) < 1) {
-      throw new Error('quantity must be provided and greater than zero')
-    }
+      const qty = Number(quantity)
 
-    const where = {}
-    if (cartItemId) where.id = cartItemId
-    if (cartId && productId) Object.assign(where, { cartId, productId })
+      if (!qty || qty < 1) return this.addError('InvalidQuantityErrorType')
 
-    if (!Object.keys(where).length) {
-      throw new Error('cartItemId or cartId and productId are required')
-    }
+      const where = {}
 
-    const item = await CartItem.findOne({ where })
-    if (!item) {
-      throw new Error('Cart item not found')
-    }
+      if (cartItemId) {
+        where.id = cartItemId
+      } else if (cartId && productId) {
+        where.cartId = cartId
+        where.productId = productId
+      } else {
+        return this.addError('CartItemIdentifierRequiredErrorType')
+      }
 
-    await item.update({ quantity })
+      const item = await CartItem.findOne({
+        where,
+        include: [
+          {
+            model: Product,
+            as: 'product',
+            attributes: ['id', 'title', 'price', 'imageUrl', 'stockQuantity', 'brand']
+          }
+        ]
+      })
 
-    return {
-      message: 'Cart item updated successfully',
-      data: item
+      if (!item) return this.addError('CartItemNotFoundErrorType')
+
+      await item.update({ quantity: qty }, { transaction })
+
+      const price = Number(item.product?.price || 0)
+      const itemTotal = price * qty
+
+      return {
+        message: 'Cart item updated successfully',
+        data: {
+          ...item.toJSON(),
+          itemTotal
+        }
+      }
+    } catch (error) {
+      throw new APIError(error)
     }
   }
 }
