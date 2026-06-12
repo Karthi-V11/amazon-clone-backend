@@ -14,7 +14,14 @@ export const messages = {
     ADDRESS_ALREADY_EXISTS: 'ADDRESS_ALREADY_EXISTS',
     ProductIdRequired: 'ProductIdRequired',
     ReviewAlreadyExists: 'ReviewAlreadyExists',
-    InvalidRating: 'InvalidRating'
+    InvalidRating: 'InvalidRating',
+    OrderNotFound: 'OrderNotFound',
+    OrderIdAndStatusRequired: 'OrderIdAndStatusRequired',
+    OrderStatusInvalidForUpdate: 'OrderStatusInvalidForUpdate',
+    OrderStatusInvalidForCancel: 'OrderStatusInvalidForCancel',
+    OrderStatusInvalidForReturn: 'OrderStatusInvalidForReturn',
+    OrderIdRequired: 'OrderIdRequired',
+    UserIdRequired: 'UserIdRequired'
 }
 
 export const errorTypes = {
@@ -116,4 +123,60 @@ export const errorTypes = {
         description: messages.InvalidRating,
         errorCode: 1014
     },
+    OrderIdRequiredErrorType: {
+        name: 'OrderIdRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.OrderIdRequired,
+        errorCode: 1015
+    },
+    OrderNotFound: {
+        name: 'OrderNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.OrderNotFound,
+        errorCode: 1016
+    },
+    OrderIdAndStatusRequiredErrorType: {
+        name: 'OrderIdAndStatusRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.OrderIdAndStatusRequired,
+        errorCode: 1017
+    },
+    OrderStatusInvalidForUpdateErrorType: {
+        name: 'OrderStatusInvalidForUpdateErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.OrderStatusInvalidForUpdate,
+        errorCode: 1018
+    },
+    OrderStatusInvalidForCancelErrorType: {
+        name: 'OrderStatusInvalidForCancelErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.OrderStatusInvalidForCancel,
+        errorCode: 1019
+    },
+    OrderStatusInvalidForReturnErrorType: {
+        name: 'OrderStatusInvalidForReturnErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.OrderStatusInvalidForReturn,
+        errorCode: 1020
+    },
+    OrderIdRequiredErrorType: {
+        name: 'OrderIdRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.OrderIdRequired,
+        errorCode: 1021
+    },
+    UserIdRequiredErrorType: {
+        name: 'UserIdRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.UserIdRequired,
+        errorCode: 1022
+    }
 }

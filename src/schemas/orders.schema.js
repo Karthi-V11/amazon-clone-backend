@@ -2,7 +2,6 @@ export const createOrderSchema = {
   body: {
     type: 'object',
     properties: {
-      userId: { type: 'integer' },
       shippingAddressId: { type: 'integer' },
       billingAddressId: { type: 'integer' },
       paymentMethod: { type: 'string' },
@@ -20,7 +19,7 @@ export const createOrderSchema = {
         }
       }
     },
-    required: ['userId', 'shippingAddressId', 'billingAddressId', 'items'],
+    required: ['shippingAddressId', 'billingAddressId', 'items'],
     additionalProperties: false
   },
   response: {
@@ -35,7 +34,7 @@ export const createOrderSchema = {
 }
 
 export const getOrderSchema = {
-  params: {
+  query: {
     type: 'object',
     properties: {
       id: { type: 'integer' }
@@ -61,7 +60,6 @@ export const getAllOrdersSchema = {
       page: { type: 'integer', minimum: 1 },
       limit: { type: 'integer', minimum: 1 },
       status: { type: 'string' },
-      userId: { type: 'integer' }
     },
     additionalProperties: false
   },
@@ -88,11 +86,9 @@ export const getOrdersHistorySchema = {
   query: {
     type: 'object',
     properties: {
-      userId: { type: 'integer' },
       page: { type: 'integer', minimum: 1 },
       limit: { type: 'integer', minimum: 1 }
     },
-    required: ['userId'],
     additionalProperties: false
   },
   response: {
@@ -115,7 +111,7 @@ export const getOrdersHistorySchema = {
 }
 
 export const cancelOrderSchema = {
-  params: {
+  body: {
     type: 'object',
     properties: {
       id: { type: 'integer' }
@@ -123,48 +119,33 @@ export const cancelOrderSchema = {
     required: ['id'],
     additionalProperties: false
   },
-  body: {
-    type: 'object',
-    properties: {
-      userId: { type: 'integer' }
-    },
-    additionalProperties: false
-  },
   response: {
     200: {
       type: 'object',
       properties: {
-        data: { type: 'object' }
+        message: { type: 'string' }
       },
-      required: ['data']
+      required: ['message']
     }
   }
 }
 
 export const updateStatusSchema = {
-  params: {
-    type: 'object',
-    properties: {
-      id: { type: 'integer' }
-    },
-    required: ['id'],
-    additionalProperties: false
-  },
   body: {
     type: 'object',
     properties: {
+      id: { type: 'integer' },
       status: { type: 'string' }
     },
-    required: ['status'],
+    required: ['id', 'status'],
     additionalProperties: false
   },
   response: {
     200: {
       type: 'object',
       properties: {
-        data: { type: 'object' }
-      },
-      required: ['data']
+        message: { type: 'string' }
+      }
     }
   }
 }
