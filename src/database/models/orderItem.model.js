@@ -37,6 +37,18 @@ export default class OrderItem extends ModelBase {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    productName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    productImage: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    productBrand: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
