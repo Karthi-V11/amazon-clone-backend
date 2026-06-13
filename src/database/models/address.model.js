@@ -66,10 +66,10 @@ export default class Address extends ModelBase {
   }
 
   static associate(models) {
-    // An address belongs to a user
     Address.belongsTo(models.user, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' })
-    // Can be used as shipping or billing address for many orders
     Address.hasMany(models.order, { foreignKey: 'shippingAddressId', as: 'shippingOrders' })
     Address.hasMany(models.order, { foreignKey: 'billingAddressId', as: 'billingOrders' })
+    Address.hasMany(models.checkout_session, { foreignKey: 'shippingAddressId', as: 'shippingCheckouts' })
+    Address.hasMany(models.checkout_session, { foreignKey: 'billingAddressId', as: 'billingCheckouts' })
   }
 }

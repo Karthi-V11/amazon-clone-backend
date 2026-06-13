@@ -1,70 +1,131 @@
+import { APIError } from '@src/errors/api.error'
 import { ServiceBase } from '@src/lib/serviceBase'
 
 export class CreateCheckoutService extends ServiceBase {
   async create(data) {
-    const { cart: Cart, cartItem: CartItem, product: Product, address: Address, order: Order, orderItem: OrderItem } = this.models
-    const { userId, shippingAddressId, billingAddressId, cartId, paymentMethod, couponCode } = data
+    const transaction = this.context.transaction
+    try {
+      const { cart: Cart, cartItem: CartItem, product: Product, address: Address, checkout_session: CheckoutSession } = this.models
+      const { userId, shippingAddressId, billingAddressId, cartId, couponCode } = data
+      const idempotencyKey = data.key
 
-    if (!userId || !shippingAddressId || !billingAddressId) {
-      throw new Error('userId, shippingAddressId and billingAddressId are required')
-    }
+      if (!idempotencyKey) {
+        return this.addError("MissingIdempotencyKeyErrorType")
+      }
+      else {
+        const existing = await CheckoutSession.findOne({ where: { idempotencyKey }, transaction })
 
-    const shippingAddress = await Address.findOne({ where: { id: shippingAddressId, userId } })
-    const billingAddress = await Address.findOne({ where: { id: billingAddressId, userId } })
-    if (!shippingAddress || !billingAddress) {
-      throw new Error('Invalid shipping or billing address')
-    }
+        if (existing) {
+          return {
+            message: 'Checkout already exists (idempotent)',
+            data: {
+              checkoutSessionId: existing.id,
+              subtotal: existing.subtotal,
+              discount: existing.discount,
+              total: existing.total,
+              status: existing.status
+            }
+          }
+        }
+      }
 
-    const cart = cartId
-      ? await Cart.findByPk(cartId, { include: [{ model: CartItem, as: 'items' }] })
-      : await Cart.findOne({ where: { userId, status: 'active' }, include: [{ model: CartItem, as: 'items' }] })
+      if (!userId) return this.addError("UserNotFoundErrorType")
+      if (!shippingAddressId || !billingAddressId) return this.addError("InvalidShippingOrBillingAddressErrorType")
 
-    if (!cart || !cart.items.length) {
-      throw new Error('Cart is empty')
-    }
+      const [shippingAddress, billingAddress] = await Promise.all([
+        Address.findOne({ where: { id: shippingAddressId, userId }, transaction }),
+        Address.findOne({ where: { id: billingAddressId, userId }, transaction })
+      ])
 
-    const productIds = cart.items.map(item => item.productId)
-    const products = await Product.findAll({ where: { id: productIds } })
-    const productMap = products.reduce((map, product) => {
-      map[product.id] = product
-      return map
-    }, {})
+      if (!shippingAddress || !billingAddress) return this.addError("InvalidShippingOrBillingAddressErrorType")
 
-    let totalAmount = 0
-    const orderItems = []
+      const cart = cartId
+        ? await Cart.findByPk(cartId, {
+          transaction,
+          lock: transaction.LOCK.UPDATE
+        })
+        : await Cart.findOne({
+          where: { userId, status: 'active' },
+          transaction,
+          lock: transaction.LOCK.UPDATE
+        })
 
-    for (const item of cart.items) {
-      const product = productMap[item.productId]
-      if (!product) continue
-      const price = Number(product.price)
-      totalAmount += price * item.quantity
-      orderItems.push({ productId: item.productId, quantity: item.quantity, priceAtPurchase: price })
-    }
+      if (!cart) throw new Error('Cart not found')
 
-    if (!orderItems.length) {
-      throw new Error('Cart contains invalid products')
-    }
+      // prevent double processing
+      if (cart.isLocked) throw new Error('Cart is already being processed')
 
-    if (couponCode === 'DISCOUNT10') {
-      totalAmount = Number((totalAmount * 0.9).toFixed(2))
-    }
+      await cart.update({ isLocked: true }, { transaction })
+      const cartItems = await CartItem.findAll({ where: { cartId: cart.id }, transaction })
 
-    const order = await Order.create({
-      userId,
-      shippingAddressId,
-      billingAddressId,
-      totalAmount,
-      paymentMethod: paymentMethod || 'unknown',
-      status: 'pending',
-      metadata: { couponCode }
-    })
+      if (!cartItems.length) return this.addError("CartItemNotFoundErrorType")
 
-    const itemsToCreate = orderItems.map(item => ({ ...item, orderId: order.id }))
-    await OrderItem.bulkCreate(itemsToCreate)
+      const productIds = cartItems.map(i => i.productId)
 
-    return {
-      message: 'Checkout created successfully',
-      data: { orderId: order.id, totalAmount, status: order.status }
+      const products = await Product.findAll({
+        where: { id: productIds },
+        transaction,
+        lock: transaction.LOCK.UPDATE
+      })
+
+      const productMap = products.reduce((acc, p) => { acc[p.id] = p; return acc }, {})
+
+      console.log("CART:", cart)
+      console.log("CART ITEMS:", cartItems)
+      const items = []
+      let subtotal = 0
+
+      for (const item of cartItems) {
+        const product = productMap[item.productId]
+
+        if (!product) throw new Error(`Product ${item.productId} not found`)
+        if (product.stock < item.quantity) throw new Error(`Insufficient stock for product ${product.id}`)
+
+        const price = Number(product.price)
+        subtotal += price * item.quantity
+        items.push({ productId: product.id, quantity: item.quantity, price })
+      }
+
+      let discount = 0
+      if (couponCode === 'DISCOUNT10') discount = subtotal * 0.1
+
+      discount = Number(discount.toFixed(2))
+      const total = Number((subtotal - discount).toFixed(2))
+
+      const checkoutSession = await CheckoutSession.create(
+        {
+          userId,
+          cartId: cart.id,
+          itemsSnapshot: items,
+          subtotal,
+          discount,
+          total,
+          shippingAddressId,
+          billingAddressId,
+          couponCode: couponCode || null,
+          status: 'created',
+          expiresAt: new Date(Date.now() + 30 * 60 * 1000),
+          idempotencyKey: idempotencyKey || null
+        },
+        { transaction }
+      )
+
+      await cart.update({ isLocked: false }, { transaction })
+
+      return {
+        message: 'Checkout created successfully',
+        data: {
+          checkoutSessionId: checkoutSession.id,
+          subtotal,
+          discount,
+          total,
+          currency: 'INR',
+          status: checkoutSession.status
+        }
+      }
+
+    } catch (error) {
+      throw new APIError(error)
     }
   }
 }

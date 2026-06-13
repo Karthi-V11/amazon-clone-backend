@@ -22,7 +22,13 @@ export const errorHandler = (err, req, res, next) => {
         response.stack = err.stack
     }
 
-    if (err.name === 'SequelizeValidationError') {
+    // if (err.name === 'SequelizeValidationError') {
+    //     response.message = err.errors.map(e => e.message)
+    //     return res.status(400).json(response)
+    // }
+
+    // SAFE Sequelize validation handling
+    if (err.name === 'SequelizeValidationError' && Array.isArray(err.errors)) {
         response.message = err.errors.map(e => e.message)
         return res.status(400).json(response)
     }

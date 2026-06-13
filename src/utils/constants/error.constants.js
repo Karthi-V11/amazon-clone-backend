@@ -29,7 +29,17 @@ export const messages = {
     CartNotFound: 'CartNotFound',
     CartItemIdentifierRequired: 'CartItemIdentifierRequired',
     CartItemNotFound: 'CartItemNotFound',
-    UserIdAndItemsRequired: 'UserIdAndItemsRequired'
+    UserIdAndItemsRequired: 'UserIdAndItemsRequired',
+    MissingIdempotencyKey: 'MissingIdempotencyKey',
+    CheckoutAlreadyExists: 'CheckoutAlreadyExists',
+    InvalidShippingOrBillingAddress: 'InvalidShippingOrBillingAddress',
+    UserNotFound: 'UserNotFound',
+    InvalidCouponCode: 'InvalidCouponCode',
+    CheckoutSessionNotFoundError: 'CheckoutSessionNotFoundError',
+    InvalidPayload: 'InvalidPayload',
+    AddressNotFound: 'AddressNotFound',
+    DeliveryMethodNotFound: 'DeliveryMethodNotFound',
+    PaymentMethodRequired: 'PaymentMethodRequired'
 }
 
 export const errorTypes = {
@@ -242,5 +252,68 @@ export const errorTypes = {
         isOperational: true,
         description: messages.UserIdAndItemsRequired,
         errorCode: 1030
+    },
+    MissingIdempotencyKeyErrorType: {
+        name: 'MissingIdempotencyKeyErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.MissingIdempotencyKey,
+        errorCode: 1031
+    },
+    InvalidShippingOrBillingAddressErrorType: {
+        name: 'InvalidShippingOrBillingAddressErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.InvalidShippingOrBillingAddress,
+        errorCode: 1032
+    },
+    UserNotFoundErrorType: {
+        name: 'UserNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.UserNotFound,
+        errorCode: 1033
+    },
+    InvalidCouponCodeErrorType: {
+        name: 'InvalidCouponCodeErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.InvalidCouponCode,
+        errorCode: 1034
+    },
+    CheckoutSessionNotFoundErrorType: {
+        name: 'CheckoutSessionNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.CheckoutSessionNotFoundError,
+        errorCode: 1035
+    },
+    InvalidPayloadErrorType: {
+        name: 'InvalidPayloadErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.InvalidPayload,
+        errorCode: 1036
+    },
+    AddressNotFoundErrorType: {
+        name: 'AddressNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.AddressNotFound,
+        errorCode: 1037
+    },
+    DeliveryMethodNotFoundErrorType: {
+        name: 'DeliveryMethodNotFoundErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.DeliveryMethodNotFound,
+        errorCode: 1038
+    },
+    PaymentMethodRequiredErrorType: {
+        name: 'PaymentMethodRequiredErrorType',
+        statusCode: StatusCodes.BAD_REQUEST,
+        isOperational: true,
+        description: messages.PaymentMethodRequired,
+        errorCode: 1039
     }
 }

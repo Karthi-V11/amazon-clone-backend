@@ -41,5 +41,6 @@ export default class Cart extends ModelBase {
     static associate(models) {
         Cart.belongsTo(models.user, { foreignKey: 'userId', as: 'user' });
         Cart.hasMany(models.cartItem, { foreignKey: 'cartId', as: 'items' });
+        Cart.hasOne(models.checkout_session, { foreignKey: 'cartId', as: 'checkoutSession' })
     }
 }

@@ -1,4 +1,5 @@
-'use strict';
+'use strict'
+import { USER_GENDER } from '../../utils/constants/public.constants'
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -26,7 +27,7 @@ module.exports = {
         allowNull: false,
       },
       gender: {
-        type: Sequelize.ENUM('MALE', 'FEMALE', 'OTHER'),
+        type: Sequelize.ENUM(Object.values(USER_GENDER)),
         allowNull: true,
       },
       email: {
