@@ -2,14 +2,13 @@ export const createCheckoutSchema = {
   body: {
     type: 'object',
     properties: {
-      userId: { type: 'integer' },
       shippingAddressId: { type: 'integer' },
       billingAddressId: { type: 'integer' },
       cartId: { type: 'integer' },
       paymentMethod: { type: 'string' },
       couponCode: { type: 'string' }
     },
-    required: ['userId', 'shippingAddressId', 'billingAddressId'],
+    required: ['shippingAddressId', 'billingAddressId'],
     additionalProperties: false
   },
   response: {
@@ -50,10 +49,9 @@ export const selectAddressSchema = {
   body: {
     type: 'object',
     properties: {
-      userId: { type: 'integer' },
       addressId: { type: 'integer' }
     },
-    required: ['userId', 'addressId'],
+    required: ['addressId'],
     additionalProperties: false
   },
   response: {

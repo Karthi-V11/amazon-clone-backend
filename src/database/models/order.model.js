@@ -69,9 +69,10 @@ export default class Order extends ModelBase {
     }
 
     static associate(models) {
-        Order.belongsTo(models.user, { foreignKey: 'userId', as: 'user' });
-        Order.belongsTo(models.address, { foreignKey: 'shippingAddressId', as: 'shippingAddress', });
-        Order.belongsTo(models.address, { foreignKey: 'billingAddressId', as: 'billingAddress', });
-        Order.hasMany(models.orderItem, { foreignKey: 'orderId', as: 'items', });
+        Order.belongsTo(models.user, { foreignKey: 'userId', as: 'user' })
+        Order.belongsTo(models.address, { foreignKey: 'shippingAddressId', as: 'shippingAddress', })
+        Order.belongsTo(models.address, { foreignKey: 'billingAddressId', as: 'billingAddress', })
+        Order.hasMany(models.orderItem, { foreignKey: 'orderId', as: 'items', })
+        Order.belongsTo(models.coupon, { foreignKey: 'couponId', as: 'coupon' })
     }
 }

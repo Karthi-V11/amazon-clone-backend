@@ -1,44 +1,69 @@
+import { APIError } from '@src/errors/api.error'
 import { ServiceBase } from '@src/lib/serviceBase'
 
 export class ValidateCheckoutService extends ServiceBase {
   async validate(data) {
-    const { cart: Cart, cartItem: CartItem, product: Product, address: Address } = this.models
-    const { userId, shippingAddressId, billingAddressId, cartId } = data
+    try {
+      const { cart: Cart, cartItem: CartItem, product: Product, address: Address, checkout_session: CheckoutSession } = this.models
+      const { userId, shippingAddressId, billingAddressId, cartId, checkoutSessionId } = data
 
-    if (!userId || !shippingAddressId || !billingAddressId) {
-      throw new Error('userId, shippingAddressId and billingAddressId are required')
-    }
+      if (!userId) return this.addError("UserNotFoundErrorType")
+      if (!shippingAddressId || !billingAddressId) return this.addError("InvalidShippingOrBillingAddressErrorType")
 
-    const shippingAddress = await Address.findOne({ where: { id: shippingAddressId, userId } })
-    const billingAddress = await Address.findOne({ where: { id: billingAddressId, userId } })
-    if (!shippingAddress || !billingAddress) {
-      throw new Error('Invalid shipping or billing address')
-    }
+      //  Validate addresses
+      const [shippingAddress, billingAddress] = await Promise.all([
+        Address.findOne({ where: { id: shippingAddressId, userId } }),
+        Address.findOne({ where: { id: billingAddressId, userId } })
+      ])
 
-    const cart = cartId
-      ? await Cart.findByPk(cartId, { include: [{ model: CartItem, as: 'items' }] })
-      : await Cart.findOne({ where: { userId, status: 'active' }, include: [{ model: CartItem, as: 'items' }] })
+      if (!shippingAddress || !billingAddress) return this.addError("InvalidShippingOrBillingAddressErrorType")
 
-    if (!cart || !cart.items.length) {
-      throw new Error('Cart is empty')
-    }
+      //  Get cart
+      const cart = cartId
+        ? await Cart.findByPk(cartId, { include: [{ model: CartItem, as: 'items' }] })
+        : await Cart.findOne({
+          where: { userId, status: 'active' },
+          include: [{ model: CartItem, as: 'items' }]
+        })
 
-    const productIds = cart.items.map(item => item.productId)
-    const products = await Product.findAll({ where: { id: productIds } })
-    const missingProducts = productIds.filter(id => !products.some(product => product.id === id))
+      if (!cart || !cart.items.length) return this.addError("CartItemNotFoundErrorType")
 
-    if (missingProducts.length) {
-      throw new Error(`Cart contains invalid products: ${missingProducts.join(', ')}`)
-    }
+      // Load products
+      const productIds = cart.items.map(i => i.productId)
+      const products = await Product.findAll({ where: { id: productIds } })
+      const productMap = products.reduce((acc, p) => { acc[p.id] = p; return acc }, {})
 
-    return {
-      message: 'Checkout validated successfully',
-      data: {
-        shippingAddress,
-        billingAddress,
-        items: cart.items,
-        totalItems: cart.items.length
+      //  Validate product + stock
+      let totalQuantity = 0
+
+      for (const item of cart.items) {
+        const product = productMap[item.productId]
+
+        if (!product) throw new Error(`Product ${item.productId} missing`)
+        if (product.stock < item.quantity) throw new Error(`Insufficient stock for product ${product.id}`)
+
+        totalQuantity += item.quantity
       }
+
+      if (checkoutSessionId) {
+        await CheckoutSession.update(
+          { status: 'validated' },
+          { where: { id: checkoutSessionId, userId } }
+        )
+      }
+
+      return {
+        message: 'Checkout validated successfully',
+        data: {
+          shippingAddressId,
+          billingAddressId,
+          totalItems: cart.items.length,
+          totalQuantity,
+          status: 'validated'
+        }
+      }
+    } catch (error) {
+      throw new APIError(error)
     }
   }
 }

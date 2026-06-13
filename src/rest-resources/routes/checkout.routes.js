@@ -6,17 +6,17 @@ import {
   validateCheckoutSchema,
   applyCouponSchema,
   selectAddressSchema,
-  deliverySchema,
-  paymentOrderSchema
+  deliverySchema
 } from '@src/schemas/checkout.schema'
+import { authMiddleware } from '../middlewares/auth.middleware'
+import { transactionMiddleware } from '../middlewares/transaction.middleware'
 
 const checkoutRouter = express.Router()
 
-checkoutRouter.post('/create', ajvValidate(createCheckoutSchema), CheckoutController.createCheckout)
-checkoutRouter.post('/validate', ajvValidate(validateCheckoutSchema), CheckoutController.validateCheckout)
-checkoutRouter.post('/apply-coupon', ajvValidate(applyCouponSchema), CheckoutController.applyCoupon)
-checkoutRouter.post('/select-address', ajvValidate(selectAddressSchema), CheckoutController.selectAddress)
-checkoutRouter.post('/delivery', ajvValidate(deliverySchema), CheckoutController.delivery)
-checkoutRouter.post('/payment', ajvValidate(paymentOrderSchema), CheckoutController.paymentOrder)
+checkoutRouter.post('/create', authMiddleware, ajvValidate(createCheckoutSchema), transactionMiddleware, CheckoutController.createCheckout)
+checkoutRouter.post('/validate', authMiddleware, ajvValidate(validateCheckoutSchema), transactionMiddleware, CheckoutController.validateCheckout)
+checkoutRouter.post('/apply-coupon', authMiddleware, ajvValidate(applyCouponSchema), transactionMiddleware, CheckoutController.applyCoupon)
+checkoutRouter.post('/select-address', authMiddleware, ajvValidate(selectAddressSchema), transactionMiddleware, CheckoutController.selectAddress)
+checkoutRouter.post('/delivery', authMiddleware, ajvValidate(deliverySchema), transactionMiddleware, CheckoutController.delivery)
 
 export { checkoutRouter }

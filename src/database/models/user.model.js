@@ -91,11 +91,9 @@ export default class User extends ModelBase {
   }
 
   static associate(models) {
-    // One user can have many addresses
     User.hasMany(models.address, { foreignKey: 'userId', as: 'addresses' })
-    // One user has one active cart
     User.hasOne(models.cart, { foreignKey: 'userId', as: 'cart' })
-    // One user can have many orders
     User.hasMany(models.order, { foreignKey: 'userId', as: 'orders' })
+    User.hasMany(models.checkout_session, { foreignKey: 'userId', as: 'checkoutSessions' })
   }
 }
