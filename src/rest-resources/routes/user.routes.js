@@ -13,6 +13,7 @@ userRouter.get('/profile', authMiddleware, ajvValidate({}), UserController.getPr
 
 userRouter.post('/signup', ajvValidate(signupSchema), transactionMiddleware, UserController.signup)
 userRouter.post('/login', ajvValidate(loginSchema), transactionMiddleware, UserController.login)
+userRouter.post('/google-signup', ajvValidate({}), transactionMiddleware, UserController.googleSignup)
 userRouter.post('/logout', authMiddleware, ajvValidate(logoutSchema), transactionMiddleware, UserController.logout)
 
 export { userRouter }

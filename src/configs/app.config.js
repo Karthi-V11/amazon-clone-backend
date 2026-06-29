@@ -18,5 +18,15 @@ export const appConfig = {
         port: process.env.REDIS_DB_PORT,
         password: process.env.REDIS_DB_PASSWORD,
     },
+    razorpay: {
+        keyId: process.env.RAZORPAY_KEY_ID,
+        keySecret: process.env.RAZORPAY_KEY_SECRET,
+        webhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET,
+    },
     port: process.env.PORT,
+    cors: process.env.CORS,
+    google: {
+        google_client_id: process.env.GOOGLE_CLIENT_ID,
+        google_secret: process.env.GOOGLE_CLIENT_SECRET
+    }
 }

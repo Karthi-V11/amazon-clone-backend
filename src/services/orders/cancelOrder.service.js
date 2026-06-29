@@ -18,7 +18,7 @@ export class CancelOrderService extends ServiceBase {
 
       if (order.status === 'cancelled') return this.addError('OrderAlreadyCancelledErrorType')
 
-      const cancellableStatuses = ['pending', 'confirmed', 'processing']
+      const cancellableStatuses = ['pending_payment', 'paid', 'processing']
 
       if (!cancellableStatuses.includes(order.status)) return this.addError('OrderCannotBeCancelledErrorType')
 

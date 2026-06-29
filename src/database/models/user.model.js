@@ -70,7 +70,7 @@ export default class User extends ModelBase {
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     isActive: {
       type: DataTypes.BOOLEAN,
@@ -79,6 +79,18 @@ export default class User extends ModelBase {
     lastLogin: {
       type: DataTypes.DATE,
       allowNull: true,
+    },
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+
+    provider: {
+      type: DataTypes.ENUM(
+        "LOCAL",
+        "GOOGLE"
+      ),
+      defaultValue: "LOCAL"
     },
     createdAt: {
       allowNull: false,

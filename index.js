@@ -16,16 +16,24 @@ import { contextMiddleware } from '@src/rest-resources/middlewares/context.middl
       console.log("REQUEST HIT:", req.method, req.url)
       next()
     })
-
+    console.log("CORS ORIGIN:", appConfig.cors)
     app.use(
       cors({
         origin: appConfig.cors,
+        // origin: "http://localhost:5173",
         credentials: true
       })
     )
     app.use(helmet())
     app.use(morgan('tiny'))
-    app.use(express.json({ limit: '1mb' }))
+    app.use(
+      express.json({
+        limit: '1mb',
+        verify: (req, res, buf) => {
+          req.rawBody = buf
+        }
+      })
+    )
     app.use(express.urlencoded({ extended: true }))
 
     app.use(contextMiddleware)

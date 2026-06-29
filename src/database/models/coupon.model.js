@@ -6,6 +6,12 @@ export default class Coupon extends ModelBase {
     static table = 'coupons'
 
     static attributes = {
+        id: {
+            type: DataTypes.BIGINT,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        },
         code: {
             type: DataTypes.STRING,
             unique: true,
@@ -55,7 +61,7 @@ export default class Coupon extends ModelBase {
     }
 
     static associate(models) {
-        Coupon.hasMany(models.checkout_session, { foreignKey: 'couponCode', sourceKey: 'code', as: 'checkoutSessions' })
-        Coupon.hasMany(models.order, { foreignKey: 'couponCode', sourceKey: 'code', as: 'orders' })
+        Coupon.hasMany(models.checkout_session, { foreignKey: 'couponId', sourceKey: 'id', as: 'checkoutSessions' })
+        Coupon.hasMany(models.order, { foreignKey: 'couponId', sourceKey: 'id', as: 'orders' })
     }
 }

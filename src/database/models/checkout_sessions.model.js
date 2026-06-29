@@ -60,6 +60,14 @@ export default class CheckoutSession extends ModelBase {
             allowNull: false,
             unique: true
         },
+        couponId: {
+            type: DataTypes.BIGINT,
+            allowNull: true,
+            references: {
+                model: 'coupons',
+                key: 'id'
+            }
+        },
         expiresAt: {
             type: DataTypes.DATE,
             allowNull: false
@@ -79,5 +87,6 @@ export default class CheckoutSession extends ModelBase {
         CheckoutSession.belongsTo(models.cart, { foreignKey: 'cartId', as: 'cart' })
         CheckoutSession.belongsTo(models.address, { foreignKey: 'shippingAddressId', as: 'shippingAddress' })
         CheckoutSession.belongsTo(models.address, { foreignKey: 'billingAddressId', as: 'billingAddress' })
+        CheckoutSession.belongsTo(models.coupon, { foreignKey: 'couponId', as: 'coupon' })
     }
 }

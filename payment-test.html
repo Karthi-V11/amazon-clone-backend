@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Test</title>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        pre {
+            margin-top: 20px;
+            background: #f4f4f4;
+            padding: 15px;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Amazon Clone Payment Test</h2>
+
+    <button id="payBtn">
+        Pay Now
+    </button>
+
+    <pre id="result"></pre>
+
+    <script>
+
+        const payBtn =
+            document.getElementById('payBtn')
+
+        const result =
+            document.getElementById('result')
+
+        payBtn.addEventListener(
+            'click',
+            function () {
+
+                const options = {
+
+                    key:
+                        'rzp_test_T1T7vR4VVVxQoH',
+
+                    amount: 1,
+
+                    currency:
+                        'INR',
+
+                    order_id:
+                        'order_T1vVQD9cXnPTrP',
+
+                    name:
+                        'Amazon Clone',
+
+                    description:
+                        'Payment Test',
+
+                    handler:
+                        async function (response) {
+
+                            result.textContent =
+                                JSON.stringify(
+                                    response,
+                                    null,
+                                    2
+                                )
+
+                            try {
+
+                                const verifyResponse =
+                                    await fetch(
+                                        'http://localhost:8004/payments/verify',
+                                        {
+                                            method: 'POST',
+
+                                            headers: {
+                                                'Content-Type':
+                                                    'application/json',
+
+                                                'Authorization':
+                                                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJlbWFpbCI6ImthcnRoaWNrMTFAZ21haWwuY29tIiwiaWF0IjoxNzgxNTMwNzA2LCJleHAiOjE3ODE1MzE2MDZ9.q3Wd8gpsVBHJCz1uq2EsJXudOiyLn396jbX9RCcVeCY'
+                                            },
+
+                                            body:
+                                                JSON.stringify(
+                                                    response
+                                                )
+                                        }
+                                    )
+
+                                const verifyData =
+                                    await verifyResponse.json()
+
+                                console.log(
+                                    verifyData
+                                )
+
+                                alert(
+                                    JSON.stringify(
+                                        verifyData,
+                                        null,
+                                        2
+                                    )
+                                )
+
+                            } catch (error) {
+
+                                console.error(
+                                    error
+                                )
+
+                                alert(
+                                    'Verification Failed'
+                                )
+                            }
+                        }
+                }
+
+                const rzp =
+                    new Razorpay(options)
+
+                rzp.open()
+            }
+        )
+
+    </script>
+
+</body>
+
+</html>

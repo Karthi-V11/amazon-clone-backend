@@ -58,6 +58,14 @@ export default class Order extends ModelBase {
             type: DataTypes.JSONB,
             allowNull: true,
         },
+        couponId: {
+            type: DataTypes.BIGINT,
+            allowNull: true,
+            references: {
+                model: 'coupons',
+                key: 'id'
+            }
+        },
         createdAt: {
             allowNull: false,
             type: DataTypes.DATE
@@ -74,5 +82,6 @@ export default class Order extends ModelBase {
         Order.belongsTo(models.address, { foreignKey: 'billingAddressId', as: 'billingAddress', })
         Order.hasMany(models.orderItem, { foreignKey: 'orderId', as: 'items', })
         Order.belongsTo(models.coupon, { foreignKey: 'couponId', as: 'coupon' })
+        Order.hasOne(models.payment, { foreignKey: 'orderId', as: 'payment' })
     }
 }

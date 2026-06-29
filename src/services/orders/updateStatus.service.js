@@ -11,7 +11,7 @@ export class UpdateStatusService extends ServiceBase {
 
       if (!id || !status) return this.addError('OrderIdAndStatusRequiredErrorType')
 
-      const allowedStatuses = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled']
+      const allowedStatuses = ['pending_payment', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded']
 
       if (!allowedStatuses.includes(status)) return this.addError('InvalidOrderStatusErrorType')
 
@@ -19,12 +19,13 @@ export class UpdateStatusService extends ServiceBase {
       if (!order) return this.addError('OrderNotFoundErrorType')
       if (order.status === status) return this.addError('OrderAlreadyInSameStatusErrorType')
       const validTransitions = {
-        pending: ['confirmed', 'cancelled'],
-        confirmed: ['processing', 'cancelled'],
-        processing: ['shipped'],
+        pending_payment: ['paid', 'cancelled'],
+        paid: ['processing', 'cancelled', 'refunded'],
+        processing: ['shipped', 'cancelled', 'refunded'],
         shipped: ['delivered'],
         delivered: [],
-        cancelled: []
+        cancelled: [],
+        refunded: []
       }
       const nextStatuses = validTransitions[order.status] || []
       if (!nextStatuses.includes(status)) return this.addError('InvalidOrderStatusTransitionErrorType')

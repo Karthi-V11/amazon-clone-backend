@@ -1,5 +1,6 @@
 import { ServiceBase } from '@src/lib/serviceBase'
 import { APIError } from '@src/errors/api.error'
+import { ORDER_STATUS } from '@src/utils/constants/public.constants'
 
 export class CreateOrderService extends ServiceBase {
   async create(data) {
@@ -45,9 +46,9 @@ export class CreateOrderService extends ServiceBase {
 
         const price = Number(product.price)
 
-        if (product.stock < quantity) {
+        if (product.stockQuantity < quantity) {
           throw new Error(
-            `${product.name} has only ${product.stock} item(s) available`
+            `${product.title} has only ${product.stockQuantity} item(s) available`
           )
         }
 
@@ -72,7 +73,7 @@ export class CreateOrderService extends ServiceBase {
           billingAddressId,
           totalAmount,
           paymentMethod: paymentMethod || 'cod',
-          status: 'pending',
+          status: ORDER_STATUS.PENDING_PAYMENT,
           metadata
         },
         { transaction }

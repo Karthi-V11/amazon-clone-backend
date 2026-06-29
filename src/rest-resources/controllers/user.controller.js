@@ -5,6 +5,7 @@ import { GetSpecificUserService } from '@src/services/user/getSpecificUser.servi
 import { GetUserProfileService } from '@src/services/user/getUserProfile.service'
 import { SignupService } from '@src/services/user/signup.service'
 import { LoginService } from '@src/services/user/login.service'
+import { GoogleSignupService } from '@src/services/user/googleSignupService'
 import { LogoutService } from '@src/services/user/logout.service'
 import {
   signupSchema,
@@ -59,6 +60,15 @@ export class UserController {
     try {
       const result = await new LoginService(req.context).login({ ...req.body })
       validateResponse(loginSchema.response?.[200], result)
+      return decorateResponse({ req, res, next }, result)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async googleSignup(req, res, next) {
+    try {
+      const result = await new GoogleSignupService(req.context).signup(req.body)
       return decorateResponse({ req, res, next }, result)
     } catch (error) {
       next(error)
